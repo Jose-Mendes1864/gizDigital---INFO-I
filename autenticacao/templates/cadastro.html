@@ -1,3 +1,4 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastro</title>
   <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/milligram.cad.css" />
+  <link rel="stylesheet" href="{% static 'css/milligram.cad.css' %}" />
 </head>
 <body>
   <div class="cadastro-container">
@@ -14,13 +15,16 @@
       <p class="foto-texto">Inserir foto</p>
     </div>
 
-    <form>
+    <form  method="POST" action="">
+    
       <input type="text" placeholder="Nome de usuário" />
       <input type="email" placeholder="Email" />
       <input type="password" placeholder="Senha" />
       <input type="password" placeholder="Confirmar senha" />
       <button type="submit">Registrar</button>
     </form>
+          <p>colocar botao para voltar para o login</p>
+
   </div>
 </body>
 </html>

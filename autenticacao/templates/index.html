@@ -1,3 +1,4 @@
+{%load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,17 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inika&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" />
-  <link rel="stylesheet" href="css/milligram.min.css">
+  <link rel="stylesheet" href="{% static 'css/milligram.min.css'%}">
   
 </head>
 <body>
   <div class="pagina">
     <header>
       <div class="logo">
-        <img src="img/macotePI-removebg-preview.png" alt="Coruja" />
+        <img src="{% static 'img/macotePI-removebg-preview.png' %}" alt="Coruja" />
         Giz Digital
       </div>
-      <button class="btn-entrar">Entrar</button>
+      <button class="btn-entrar"><a href="{%url 'login' %}">Entrar</a></button>
     </header>
 
     <main class="hero">
@@ -26,7 +27,7 @@
       <span class="linha linha-roxa"><h1>Para Docentes</h1></span>
       <span class="linha linha-verde"><h1>Qualidade na educação</h1></span>
       <br />
-      <button class="btn-comecar">Comece</button>
+      <button class="btn-comecar"><a href="{%url 'login' %}">Comece</a></button>
     </main>
 
   <div class="fundoQuadro">
@@ -40,7 +41,7 @@
         <li>Crescer com o seu perfil</li>
       </ul>
     </section>
-    <img class="coruja" src="img/corujaJoseph-removebg-preview.png" alt="Coruja mascote" />
+    <img class="coruja" src="{% static 'img/corujaJoseph-removebg-preview.png' %}" alt="Coruja mascote" />
   </div>
 </div>
 

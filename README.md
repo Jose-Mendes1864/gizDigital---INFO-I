@@ -1,1 +1,1 @@
-# gizDigital
+# config
