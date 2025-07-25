@@ -1,0 +1,176 @@
+:root {
+  --azul: #4A87F2;
+  --roxo: #6D5F93;
+  --verde: #057D52;
+  --fundo: #bcf1fd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--fundo);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Cabin Sketch';
+  overflow-x: hidden;
+}
+
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+header,
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #39bcda;
+  border-bottom: 2px solid #379eb8;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 2rem;
+  color: white;
+  font-weight: bold;
+}
+
+.logo img {
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+}
+
+.btn-entrar {
+  font-size: 0.8rem;
+  background-color: #1F505B;
+  color: #FAFEFF;
+  font-weight: bold;
+  border-radius: 18px;
+  width: auto;
+  height: 30px;
+}
+
+.hero {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.hero h1,
+.linha {
+  font-family: 'Inika', serif;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 9px;
+}
+
+.linha {
+  display: block;
+  font-weight: bold;
+}
+
+.linha-azul {
+  color: var(--azul);
+}
+.linha-roxa {
+  color: var(--roxo);
+}
+.linha-verde {
+  color: var(--verde);
+}
+
+.btn-comecar {
+  margin-top: 0;
+  padding: 0.2rem 1.0rem;
+  background-color: #1F505B;
+  color: #FFFEFE;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  width: 100px;
+  height: 50px;
+}
+
+.fundoQuadro {
+  background-color: #72DBF3;
+  padding: 4rem 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.conteudo-com-coruja {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 100%;
+}
+
+.quadro {
+  background-color: #1f505b;
+  box-shadow: 0 0 0 10px #9f6d02;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  width: 230px;
+  flex-shrink: 0;
+  margin-left: 40px;
+  color: #FFFFFF;
+}
+
+.quadro h2 {
+  font-size: 20px;
+  margin-bottom: 0.8rem;
+}
+
+.quadro ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+.quadro ul li {
+  margin: 0.5rem 0;
+  font-size: 15px;
+}
+
+.coruja {
+  width: 140px;
+  height: auto;
+  flex-shrink: 0;
+  margin-bottom: -20px;
+  position: relative;
+  left: -30px; /* empurra mais perto do quadro */
+}
+
+/* Footer */
+footer h1 {
+  font-size: 1rem;
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 350px) {
+  .quadro {
+    width: 180px;
+    font-size: 0.85rem;
+  }
+
+  .coruja {
+    width: 70px;
+  }
+}
