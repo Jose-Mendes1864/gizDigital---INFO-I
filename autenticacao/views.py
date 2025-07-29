@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from django.http import HttpResponse
-from .models import  Usuario
+
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.contrib import auth
+
+from .models import  Usuario
+from .functions import enviar_email
+import secrets
+
 # Create your views here.
 # class moldeView(View):
 #     def get(self,request, *args, **kwargs):
@@ -21,7 +27,24 @@ class LoginView(View):
     def get(self,request, *args, **kwargs):
         return render(request, 'login.html')
     def post(self,request, *args, **kwargs):
-        return HttpResponse('post')
+        if request.user.is_authenticated:
+            return HttpResponse("Usuario já esta autenticado " + request.user.username + ' Retornar para pagina index')
+ 
+        email = request.POST.get('email').strip()
+        senha = request.POST.get('senha')
+        print(email)
+        print(senha)
+
+        usuario = auth.authenticate(request, username=email, password=senha)
+
+        if not usuario:
+            messages.add_message(request, constants.ERROR, 'Por favor insira email e senha corretos')
+            return redirect('login')
+        else:
+            auth.login(request, usuario)
+
+            return HttpResponse("Usuario já esta autenticado " + request.user.username + ' Retornar para pagina index')
+    
     
 class CadastrarView(View):
     def get(self,request, *args, **kwargs):
@@ -40,27 +63,46 @@ class CadastrarView(View):
             return render(request, 'cadastro.html')
         usuarioExist = Usuario.objects.filter(username=username)
         if(usuarioExist):
-            messages.add_message(request, constants.WARNING, "Já há um usuário com esse nome")
+            messages.add_message(request, constants.ERROR, "Já há um usuário com esse nome")
             return render(request, 'cadastro.html')
         emailExist = Usuario.objects.filter(email=email)
         if(emailExist):
-            messages.add_message(request, constants.WARNING, "Esse e-mail já esta registrado")
+            messages.add_message(request, constants.ERROR, "Esse e-mail já esta registrado")
             return render(request, 'cadastro.html')
         try:
 
-            user = Usuario(
+            user = Usuario.objects.create_user(
                 username=username,
                 email=email,
                 password=senha
             )
             user.save()
             messages.add_message(request, constants.SUCCESS, "Usuario criado com sucesso, seja  bem-vindo")
-
-            return render(request, 'login.html')
+            auth.login(request, user)
+            return render(request, 'questionario.html')
         except:
             
             messages.DEBUG(request, constants.WARNING, "Erro interno do sitema")
             return render(request, 'cadastro.html')
 
-               
+class ForgetView(View):
+    def get(self,request, *args, **kwargs):
+        return render(request, 'recuperacao.html')
+    def post(self,request, *args, **kwargs):
+        email = request.POST.get('email').strip()
+        if Usuario.objects.filter(email=email):
+            # token  = enviar_email(email, assunt='recuperar_senha')
+            enviar_email()
+            return HttpResponse('Email envido com sucesso')
+        else:
+            messages.add_message(request, constants.ERROR, 'Email não encontrado')
 
+        return render(request, 'recuperacao.html')
+
+
+
+
+               
+def sair(request):
+    auth.logout(request)
+    return redirect('login')

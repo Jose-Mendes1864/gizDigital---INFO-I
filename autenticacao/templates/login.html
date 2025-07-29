@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <form>
+    <form method="POST">
       {% csrf_token %}
       <div class="message" style="text-align: center;">
         {% if messages %}
@@ -29,9 +29,9 @@
           {% endfor %}
         {% endif %}
       </div>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Senha" />
-      <a href="#" class="esqueci">esqueci minha senha</a>
+      <input type="email" placeholder="Email" name="email" />
+      <input type="password" placeholder="Senha" name="senha" />
+      <a href="{% url 'forget_password' %}" class="esqueci">esqueci minha senha</a>
       <button class="btn-entrar">Entrar</button>
       <button class="btn-registrar"><a href="{% url 'cadastrar' %}">Registrar</a></button>
     </form>
