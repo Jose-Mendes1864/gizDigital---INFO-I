@@ -16,7 +16,13 @@
     <p>Insira seu e-mail cadastrado para receber o link de redefinição</p>
     
     <form method="POST" action="">
+     
       {% csrf_token %}
+       {% if messsages %}
+        {% for i in message %}
+         {{i}}
+        {% endfor %}
+      {%endif%}
       <div class="message" style="text-align: center;">
         {% if messages %}
           {% for message in messages%} 

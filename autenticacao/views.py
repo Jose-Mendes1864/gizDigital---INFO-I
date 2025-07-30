@@ -91,9 +91,11 @@ class ForgetView(View):
     def post(self,request, *args, **kwargs):
         email = request.POST.get('email').strip()
         if Usuario.objects.filter(email=email):
-            # token  = enviar_email(email, assunt='recuperar_senha')
-            enviar_email()
-            return HttpResponse('Email envido com sucesso')
+            token  = enviar_email(email_destinatario=email)
+            if token.split('+')[0] == 'error':
+                messages.add_message(request, constants.ERROR, f'Erro do servidor {token.split('+')[1]}')
+                return render(request, 'recuperacao.html')
+            return HttpResponse(f'Token enviado, ele é = {token}')
         else:
             messages.add_message(request, constants.ERROR, 'Email não encontrado')
 
@@ -103,6 +105,3 @@ class ForgetView(View):
 
 
                
-def sair(request):
-    auth.logout(request)
-    return redirect('login')

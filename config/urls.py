@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from  django.shortcuts import redirect
+from .views import sair
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('autenticacao.urls')),
-    path('', lambda x : redirect('login'))
+    path('', lambda x : redirect('login')),
+    path('sair/', sair, name='sair')
+
 ]
