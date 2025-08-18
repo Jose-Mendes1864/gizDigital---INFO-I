@@ -20,9 +20,10 @@ from  django.shortcuts import redirect
 from .views import sair
 
 urlpatterns = [
+    path('', lambda x : redirect('login')),
     path('admin/', admin.site.urls),
     path('auth/', include('autenticacao.urls')),
-    path('', lambda x : redirect('login')),
+    path('app/', include('app.urls')),
     path('sair/', sair, name='sair')
 
 ]

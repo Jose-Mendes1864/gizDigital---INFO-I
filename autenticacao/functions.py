@@ -33,11 +33,8 @@ def enviar_email(email_destinatario):
         codigo_aleatorio = ' '.join(str(secrets.randbelow(10)) for _ in range(6))
 
         html_content = render_to_string('arquivoEmail.html', {'codigo': codigo_aleatorio})
-
         mensagem_simples= f'Ola, seu código é {codigo_aleatorio}'
 
-
-    
         # Criar a mensagem
         msg = MIMEMultipart('alternative') #O tipo 'alternative' indica que as partes do e-mail são alternativas do mesmo conteúdo, preferindo o HTML quando possível.
         msg['From'] = email_remetente
