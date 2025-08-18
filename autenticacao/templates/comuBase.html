@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ comunidade.nome }}</title>
+  <link rel="stylesheet" href="{% static 'css/milligram.cBase.css' %}" />
+</head>
+<body class="comunidade {{ comunidade.slug }}">
+<header class="comunidade-header">
+    <img src="{{ comunidade.imagem.url }}" alt="Imagem da comunidade" class="comunidade-img" />
+    <div class="comunidade-info">
+      <h1>{{ comunidade.nome }}</h1>
+      <p>{{ comunidade.descricao }}</p>
+      <button class="btn-junte-se">Junte-se</button>
+      <div class="comunidade-meta">
+        <span>{{ comunidade.membros.count }} membros</span>
+        <span>{{ comunidade.posts.count }} postagens</span>
+      </div>
+    </div>
+</header>
+<nav class="comunidade-tabs">
+    <a href="#">postagens</a>
+    <a href="#">materiais</a>
+    <a href="#">destaques</a>
+</nav>
+<main class="comunidade-posts">
+    {% for post in comunidade.posts.all %}
+      <div class="post">
+        <div class="post-header">
+          <img src="{{ post.autor.foto.url }}" alt="{{ post.autor.nome }}" class="avatar" />
+          <div>
+            <strong>{{ post.autor.nome }}</strong>
+            <span class="data">{{ post.data|date:"d M" }}</span>
+          </div>
+        </div>
+        <p>{{ post.conteudo }}</p>
+        {% if post.imagem %}
+          <img src="{{ post.imagem.url }}" alt="Imagem do post" class="post-img" />
+        {% endif %}
+      </div>
+    {% endfor %}
+</main>
+</body>
+</html>
+<!-- Fala josé! Essa aqui foi a pagina que definitivamente me deu mais trabalho, qualquer pergunta, pode entrar em contato comigo, mas acho que voce vai entender, eu que quebrei a cabeça kskskks -->

@@ -17,11 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from  django.shortcuts import redirect
-from .views import IndexView, LoginView,CadastrarView, ForgetView
+from .views import IndexView, LoginView, CadastrarView, ForgetView, ComunidadesView, ComunidadeView, PerfilEdit
 urlpatterns = [
     path('start/', IndexView.as_view(), name='start'),
     path('login/', LoginView.as_view(), name='login'),
     path('cadastrar/', CadastrarView.as_view(), name='cadastrar'),
     path('forget_password/', ForgetView.as_view(), name='forget_password'),
+    path('comunidades/', ComunidadesView.as_view(), name='comunidades'),
+    path('comunidade/', ComunidadeView.as_view(), name='comunidade'),
+    path('pEdit/', PerfilEdit.as_view(), name='pEdit'),
     
 ]

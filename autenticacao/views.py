@@ -101,7 +101,17 @@ class ForgetView(View):
 
         return render(request, 'recuperacao.html')
 
+        return HttpResponse('post')
+    
+class ComunidadesView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'comuGeral.html')
 
-
-
-               
+class ComunidadeView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'comuBase.html')
+    
+class PerfilEdit(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'perfilEdit.html') 
+        # Fala josé, outro recado aqui! Esse perfil edit provavelmente nem classe é! já que é apenas um atributo da pagina de perfil maaas... Não temos como vai ser o perfil, só a edição -> conversar com a sarah sobre isso

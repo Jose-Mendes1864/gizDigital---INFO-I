@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comunidades</title>
+  <link rel="stylesheet" href="{% static 'css/milligram.cGeral.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+       <div class="header-left">
+        <a href="{% url 'pEdit' %}"><img src="{%static 'img/macotePI-removebg-preview.png' %}" alt="Avatar" class="avatar" /></a>
+        <i class="fas fa-bell notification"></i>
+      </div>
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-bar" placeholder="pesquise comunidades" />
+      </div>
+    </header>
+
+    <section class="recommended">
+      <h2>Comunidades Recomendadas:</h2>
+      <div class="card-group">
+        <h2><a href="{% url 'comunidade' %}">exemplo de redirecionamento</a></h2>
+        {% for comunidade in comunidades %}
+          <div class="card {{ comunidade.cor }}">
+            <div class="card-content">
+              <img src="{{ comunidade.imagem.url }}" alt="{{ comunidade.nome }}" />
+              <div>
+                <h3>{{ comunidade.nome }}</h3>
+                <p>{{ comunidade.membros.count }} membros</p>
+                <p class="desc">{{ comunidade.descricao|truncatewords:20 }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="highlights">
+      <h2>Destaques:</h2>
+      <div class="card-group">
+        {% for comunidade in comunidades %}
+          <div class="card {{ comunidade.cor }}">
+            <div class="card-content">
+              <img src="{{ comunidade.imagem.url }}" alt="{{ comunidade.nome }}" />
+              <div>
+                <h3>{{ comunidade.nome }}</h3>
+                <p>{{ comunidade.membros.count }} membros</p>
+                <p class="desc">{{ comunidade.descricao|truncatewords:20 }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <footer>
+      <i class="fas fa-user"></i>
+      <i class="fas fa-plus"></i>
+      <i class="fas fa-pencil-alt"></i>
+    </footer>
+  </div>
+</body>
+</html>
