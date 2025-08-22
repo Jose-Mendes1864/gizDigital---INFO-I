@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,10 +9,15 @@
   <link rel="stylesheet" href="{% static 'css/milligram.pEdit.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
+
 <body>
   <div class="container">
     <header>
-      <button class="back"><i class="fas fa-arrow-left"></i></button>
+      <button class="back" >
+        <a href="{% url 'indexComunidade' %}" class="back">
+    <i class="fas fa-arrow-left"></i>
+    </a>
+      </button>
       <h1>Editar perfil</h1>
       <button class="save">Save</button>
     </header>
@@ -34,18 +40,18 @@
           <input type="text" placeholder="nomeexemplo" />
         </div>
         <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
+          <label>Nome de usuário</label>
+          <input type="text" placeholder="" value="{{user.username}}" />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
+          <label>E-mail</label>
+          <input type="text" value="{{user.email}}" />
         </div>
         <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
+          <label>Primeiro login</label>
+          <input type="text" value='{{user.date_joined|date:"d/m/y"}}' disabled />
         </div>
       </div>
       <div class="form-row">
@@ -61,4 +67,5 @@
     </form>
   </div>
 </body>
+
 </html>

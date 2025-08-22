@@ -11,6 +11,7 @@ from .functions import enviar_email
 import secrets
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+
 # Create your views here.
 # class moldeView(View):
 #     def get(self,request, *args, **kwargs):

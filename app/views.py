@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
 class IndexComunidadeView(View):
     def get(self, request, *args, **kwargs):
@@ -11,6 +13,10 @@ class ComunidadeView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'comuBase.html')
     
-class PerfilEdit(View):
+class PerfilEdit(LoginRequiredMixin,View):
+    template_name = "perfil.html"
+    login_url = 'login'
+     
     def get(self, request, *args, **kwargs):
-        return render(request, 'perfilEdit.html') 
+        print(request.user.username)
+        return render(request, self.template_name, {'user': request.user}) 

@@ -2,6 +2,7 @@ import os
 import smtplib
 import secrets
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from config import settings
@@ -62,3 +63,5 @@ def enviar_email(email_destinatario):
         return codigo_aleatorio
     except Exception as e:
         return f'error+{e}'
+    
+

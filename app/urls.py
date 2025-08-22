@@ -19,9 +19,9 @@ from django.urls import path
 from  django.shortcuts import redirect
 from .views import  IndexComunidadeView, ComunidadeView, PerfilEdit
 urlpatterns = [
-
     path('', IndexComunidadeView.as_view(), name='indexComunidade'),
     path('comunidade/', ComunidadeView.as_view(), name='comunidade'),
     path('perfil/', PerfilEdit.as_view(), name='perfil'),
+    
     
 ]
