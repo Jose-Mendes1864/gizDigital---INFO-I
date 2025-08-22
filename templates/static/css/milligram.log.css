@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: 'Cabin Sketch', cursive;
+  background-color: #87e0f7; /* azul claro */
+}
+
+/* .pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+} */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* <-- Isso centraliza verticalmente */
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+.logo-login {
+  margin-bottom: 2rem;
+}
+
+.coruja-circulo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid #305a63;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #dff9ff;
+}
+
+.coruja-circulo img {
+  width: 80px;
+  height: auto;
+}
+
+form {
+  text-align: center;
+}
+
+form input, form button {
+  width: 100%;
+  max-width: 250px;
+}
+
+form input {
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 20px;
+  background-color: #5796a6; /* azul petróleo */
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+form input::placeholder {
+  color: white;
+}
+
+.esqueci {
+  font-size: 0.9rem;
+  color: #444;
+  display: block;
+  margin-bottom: 1.2rem;
+  text-decoration: none;
+}
+
+.btn-entrar,
+.btn-registrar {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  background-color: #fde08a;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #914e00;
+  cursor: pointer;
+}

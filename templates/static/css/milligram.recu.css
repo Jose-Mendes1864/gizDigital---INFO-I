@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cabin Sketch', cursive;
+    background: #f9f9f9;
+}
+
+
+.pagina {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+
+/* Logo no topo */
+.logo-login {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.coruja-circulo img {
+    width: 120px;
+    height: auto;
+}
+
+
+h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+/* Inputs */
+form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Botão principal */
+.btn-entrar {
+    width: 100%;
+    padding: 12px;
+    background: #8e44ad;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn-entrar:hover {
+    background: #732d91;
+}
+
+/* Botão secundário */
+.btn-registrar {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid #8e44ad;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-registrar a {
+    text-decoration: none;
+    color: #8e44ad;
+    display: block;
+    font-weight: bold;
+}
