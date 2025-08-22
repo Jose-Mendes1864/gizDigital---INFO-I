@@ -25,6 +25,7 @@
       <h2>Comunidades Recomendadas:</h2>
       <div class="card-group">
         <h2><a href="{% url 'comunidade' %}">exemplo de redirecionamento</a></h2>
+        <h2><a href="{% url 'sair' %}">Logout</a></h2>
         {% for comunidade in comunidades %}
           <div class="card {{ comunidade.cor }}">
             <div class="card-content">

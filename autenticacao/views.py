@@ -9,6 +9,7 @@ from django.contrib import auth
 from .models import  Usuario
 from .functions import enviar_email
 import secrets
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your views here.
 # class moldeView(View):
@@ -19,16 +20,20 @@ import secrets
 
 class IndexView(View):
     def get(self,request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('indexComunidade')
         return render(request, 'index.html')
     def post(self,request, *args, **kwargs):
         return HttpResponse('Teste')
     
 class LoginView(View):
     def get(self,request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('indexComunidade')
         return render(request, 'login.html')
     def post(self,request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponse("Usuario já esta autenticado " + request.user.username + ' Retornar para pagina index')
+            return redirect('indexComunidade')
  
         email = request.POST.get('email').strip()
         senha = request.POST.get('senha')
@@ -43,18 +48,20 @@ class LoginView(View):
         else:
             auth.login(request, usuario)
 
-            return HttpResponse("Usuario já esta autenticado " + request.user.username + ' Retornar para pagina index')
+            return redirect('indexComunidade')
     
     
 class CadastrarView(View):
     def get(self,request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponse("Usuario já esta autenticado" + request.user.username)
+            return redirect('indexComunidade')
         return render(request, 'cadastro.html')
     def post(self,request, *args, **kwargs):
         username = request.POST.get('username')
         email = request.POST.get('email')
         senha = request.POST.get('senha')
+        foto = request.FILES.get('imagem')
+        print(foto)
         if(' ' in senha):
             messages.add_message(request, constants.WARNING, "Não é possível cadastrar uma senha com espaços em branco")
             return render(request, 'cadastro.html')
@@ -70,19 +77,25 @@ class CadastrarView(View):
             messages.add_message(request, constants.ERROR, "Esse e-mail já esta registrado")
             return render(request, 'cadastro.html')
         try:
-
             user = Usuario.objects.create_user(
                 username=username,
                 email=email,
-                password=senha
+                password=senha,
+               
             )
-            user.save()
+            if foto:
+                user.foto =foto
+                
+            user.save() 
+            
+            t.save()
+            
             messages.add_message(request, constants.SUCCESS, "Usuario criado com sucesso, seja  bem-vindo")
             auth.login(request, user)
             return render(request, 'questionario.html')
-        except:
+        except Exception as e:
             
-            messages.DEBUG(request, constants.WARNING, "Erro interno do sitema")
+            messages.add_message(request, constants.DEBUG, f'Erro interno do sitema {e}')
             return render(request, 'cadastro.html')
 
 class ForgetView(View):
@@ -115,3 +128,11 @@ class PerfilEdit(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'perfilEdit.html') 
         # Fala josé, outro recado aqui! Esse perfil edit provavelmente nem classe é! já que é apenas um atributo da pagina de perfil maaas... Não temos como vai ser o perfil, só a edição -> conversar com a sarah sobre isso
+
+
+# InMemoryLoadedFile  -Armazena no Ram quando é menos de 2mb django usa ele
+# Temporary LoadedFile - >2.5 memoria usa isso
+# 
+# 
+# 
+# 

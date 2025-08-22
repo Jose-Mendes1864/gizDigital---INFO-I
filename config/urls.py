@@ -19,11 +19,15 @@ from django.urls import path,include
 from  django.shortcuts import redirect
 from .views import sair
 
+
+from django.conf.urls.static import static
+from . import settings
 urlpatterns = [
-    path('', lambda x : redirect('login')),
+    path('', lambda request : redirect('login') if  not request.user.is_authenticated  else redirect('indexComunidade') ),
     path('admin/', admin.site.urls),
     path('auth/', include('autenticacao.urls')),
     path('app/', include('app.urls')),
     path('sair/', sair, name='sair')
 
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+

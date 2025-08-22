@@ -17,10 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from  django.shortcuts import redirect
-from .views import  ComunidadesView, ComunidadeView, PerfilEdit
+from .views import  IndexComunidadeView, ComunidadeView, PerfilEdit
 urlpatterns = [
 
-    path('', ComunidadesView.as_view(), name='comunidades'),
+    path('', IndexComunidadeView.as_view(), name='indexComunidade'),
     path('comunidade/', ComunidadeView.as_view(), name='comunidade'),
     path('perfil/', PerfilEdit.as_view(), name='perfil'),
     

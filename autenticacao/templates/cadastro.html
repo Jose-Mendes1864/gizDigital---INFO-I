@@ -12,13 +12,14 @@
 </head>
 <body>
   <div class="cadastro-container">
-    <div class="foto-container">
+    
+    <form  id="form" method="POST" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="foto-container">
       <div class="circulo-foto"></div>
-      <p class="foto-texto">Inserir foto</p>
+      <p class="foto-texto"><input class="imagem" type="file" name="imagem"></p>
     </div>
 
-    <form  id="form" method="POST" action="">
-      {% csrf_token %}
       <div class="message" style="text-align: center;">
         {% if messages%}
           {% for message in messages%} 

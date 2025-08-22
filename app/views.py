@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
 # Create your views here.
-class ComunidadesView(View):
+class IndexComunidadeView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'comuGeral.html')
+        return render(request, 'indexComunidade.html')
       
 
 class ComunidadeView(View):

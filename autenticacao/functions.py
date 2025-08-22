@@ -1,24 +1,34 @@
 import os
 import smtplib
 import secrets
+from django.http import HttpResponse
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from config import settings
 from django.template.loader import render_to_string 
+import secrets
+
+print(">>> functions.py carregado")
 
 def caminho_imagem(instance, filename):
+  
     # Pega a extensão do arquivo original
-    extensao = filename.split('.')[-1]
+    try:
+        extensao = filename.split('.')[-1]
+        
+        # Garante um nome de arquivo seguro
+        nome_formatado = instance.nome_completo.replace(' ', '_').lower() + '_Photo'
+        caminho = instance.pasta_destino
+
+        # Cria o novo nome do arquivo
+        novo_nome = f'{nome_formatado}_{secrets.token_hex(4)}.{extensao}' 
+
+        # Retorna o caminho relativo
+        print(os.path.join(caminho, novo_nome))
+        return os.path.join(caminho, novo_nome)
     
-    # Garante um nome de arquivo seguro
-    nome_formatado = instance.nome.replace(' ', '_').lower() + '_Photo'
-    caminho = instance.pasta_destino
-    # Cria o novo nome do arquivo
-    novo_nome = f"{nome_formatado}_{instance.id}.{extensao}" #deixando
-
-    # Retorna o caminho relativo
-    return os.path.join(caminho, novo_nome)
-
+    except Exception as e:
+        print(f'O erro é {e}')
 
 def enviar_email(email_destinatario):
    
