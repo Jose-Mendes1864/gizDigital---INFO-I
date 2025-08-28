@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperação</title>
+    <link rel="stylesheet" href="{% static 'css/milligram.recuper.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Recuperar Senha</h2>
+        <p>Insira o codigo enviado no seu e-mail cadastrado</p>
+        <form>
+            <div class="code-inputs">
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+                <input type="text" maxlength="1" required>
+            </div>
+            <button type="submit">Confirmar</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Cabin Sketch', cursive;
-  background-color: #87e0f7; /* azul claro */
+  background-color: #87e0f7; 
 }
 
 /* .pagina {
@@ -47,12 +47,12 @@ form {
   text-align: center;
 }
 
-form input, form button {
+form input, form button, .posForm {
   width: 100%;
   max-width: 250px;
 }
 
-form input {
+form input{
   padding: 0.6rem;
   margin: 0.5rem 0;
   border: none;

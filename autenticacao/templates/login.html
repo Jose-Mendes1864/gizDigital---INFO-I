@@ -33,8 +33,10 @@
       <input type="password" placeholder="Senha" name="senha" />
       <a href="{% url 'forget_password' %}" class="esqueci">esqueci minha senha</a>
       <button type="submit" class="btn-entrar">Entrar</button>
-      <button class="btn-registrar"><a href="{% url 'cadastrar' %}">Registrar</a></button>
     </form>
+    <div class="posForm">
+    <button type="submit" class="btn-registrar"><a href="{% url 'cadastrar' %}">Registrar</a></button>
+    </div>
   </div>
   </div>
 </body>
