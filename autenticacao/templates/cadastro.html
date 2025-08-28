@@ -16,7 +16,7 @@
     <form  id="form" method="POST" action="" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="foto-container">
-      <div class="circulo-foto"></div>
+      <div class="circulo-foto" id="circulo-foto"></div>
       <p class="foto-texto"><input class="imagem" type="file" name="imagem"></p>
     </div>
 
@@ -38,5 +38,6 @@
   </div>
 
    <script src="{% static 'js/cadastro.js' %}"></script>
+   
 </body>
 </html>

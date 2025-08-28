@@ -88,9 +88,7 @@ class CadastrarView(View):
                 user.foto =foto
                 
             user.save() 
-            
-            t.save()
-            
+                        
             messages.add_message(request, constants.SUCCESS, "Usuario criado com sucesso, seja  bem-vindo")
             auth.login(request, user)
             return render(request, 'questionario.html')
@@ -107,7 +105,7 @@ class ForgetView(View):
         if Usuario.objects.filter(email=email):
             token  = enviar_email(email_destinatario=email)
             if token.split('+')[0] == 'error':
-                messages.add_message(request, constants.ERROR, f'Erro do servidor {token.split('+')[1]}')
+                messages.add_message(request, constants.ERROR, f"Erro do servidor {token.split('+')[1]}")
                 return render(request, 'recuperacao.html')
             return HttpResponse(f'Token enviado, ele é = {token}')
         else:
