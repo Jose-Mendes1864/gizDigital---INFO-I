@@ -109,7 +109,7 @@ class ForgetView(View):
                 return render(request, 'recuperacao.html')
             return HttpResponse(f'Token enviado, ele é = {token}')
         else:
-            messages.add_message(request, constants.ERROR, 'Email não encontrado')
+            messages.add_message(request, constants.ERROR, 'Email não correspondente a nenhuma conta')
 
         return render(request, 'recuperacao.html')
 
