@@ -25,6 +25,7 @@ html, body {
 
 /* Header */
 header {
+  margin-left: calc((100vw - 100%) / -2);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -144,8 +145,8 @@ footer {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 500px;
+  width: 100vw;
+  margin-left: calc((100vw - 100%) / -2);
   background-color: #81d4fa;
   /* border-radius: 20px 20px 0 0; */
   padding: 15px 0;

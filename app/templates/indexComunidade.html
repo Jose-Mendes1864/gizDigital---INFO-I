@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
+   <header>
        <div class="header-left">
         <a href="{% url 'perfil' %}"><img src="{%static 'img/macotePI-removebg-preview.png' %}" alt="Avatar" class="avatar" /></a>
         <i class="fas fa-bell notification"></i>
@@ -21,7 +20,8 @@
       </div>
     </header>
 
-    <section class="recommended">
+  <div class="container">
+      <section class="recommended">
       <h2>Comunidades Recomendadas:</h2>
       <div class="card-group">
         <h2><a href="{% url 'comunidade' %}">exemplo de redirecionamento</a></h2>
@@ -58,12 +58,11 @@
         {% endfor %}
       </div>
     </section>
-
-    <footer>
+  </div>
+  <footer>
       <i class="fas fa-user"></i>
       <i class="fas fa-plus"></i>
       <i class="fas fa-pencil-alt"></i>
     </footer>
-  </div>
 </body>
 </html>
