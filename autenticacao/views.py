@@ -98,35 +98,45 @@ class CadastrarView(View):
             return render(request, 'cadastro.html')
 
 class ForgetView(View):
+    template_name= 'recuperacao.html'
     def get(self,request, *args, **kwargs):
-        return render(request, 'recuperacao.html')
+        return render(request, self.template_name)
     def post(self,request, *args, **kwargs):
         email = request.POST.get('email').strip()
         if Usuario.objects.filter(email=email):
             token  = enviar_email(email_destinatario=email)
             if token.split('+')[0] == 'error':
                 messages.add_message(request, constants.ERROR, f"Erro do servidor {token.split('+')[1]}")
-                return render(request, 'recuperacao.html')
-            return HttpResponse(f'Token enviado, ele é = {token}')
+                return render(request, self.template_name)
+            request.session['emailNovaSenha'] = email
+            request.session['token'] = token #salvar isso em outra coisa, que se abrir o inspecionar
+            return render(request,'recuperacao_cod.html',{'token': token} )
+
         else:
             messages.add_message(request, constants.ERROR, 'Email não correspondente a nenhuma conta')
 
         return render(request, 'recuperacao.html')
+class RedefinirSenha(View):
+    def get(self, request,*args,**kwargs):
+        return HttpResponse('get')
+    def post(self, request,*args,**kwargs):
+        codigo = request.POST.get('codigo')
+        codigo_correto = ''.join(request.session.get('token').split())
+        # if codigo == codigo_correto:  
+            #esse auqi é a condição verdadeira, descomentar depois
+        if codigo == '123456':
+            return redirect('novasenha')   
+        return HttpResponse(f'codigo {codigo} diferente de {codigo_correto}')
 
-        return HttpResponse('post')
-    
-class ComunidadesView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'comuGeral.html')
+def novasenha(request):
+    if request.method == 'GET':
+        email = request.session.get('emailNovaSenha')
+        user = Usuario.objects.get(email=email)
+        return render(request,'recuperacao_newPass.html', {'user': user})
+    elif request.method == 'POST':
+        return HttpResponse('teste')
+        
 
-class ComunidadeView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'comuBase.html')
-    
-class PerfilEdit(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'perfilEdit.html') 
-        # Fala josé, outro recado aqui! Esse perfil edit provavelmente nem classe é! já que é apenas um atributo da pagina de perfil maaas... Não temos como vai ser o perfil, só a edição -> conversar com a sarah sobre isso
 
 
 # InMemoryLoadedFile  -Armazena no Ram quando é menos de 2mb django usa ele

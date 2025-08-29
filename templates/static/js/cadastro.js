@@ -13,9 +13,7 @@ function validaLogin(event){
         let message = document.querySelector('.message')
         message.innerHTML = 'As senhas não conincidem';
     }
-    else{
-        alert('iu')
-    }
+  
 
    
 }

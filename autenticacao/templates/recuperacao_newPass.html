@@ -10,12 +10,15 @@
 <body>
     <div class="container">
         <h2>Nova Senha</h2>
-        <p>Defina sua nova senha</p>
-        <form>
-            <input type="password" placeholder="Nova senha" required>
+        <p>Ola! {{user.username}}, defina uma nova senha</p>
+        <form id="form" method="POST">
+            {% csrf_token %}
+            <input type="password" name="senha" placeholder="Nova senha" required>
             <input type="password" placeholder="Confirmar senha" required>
             <button type="submit">Redefinir</button>
         </form>
     </div>
+  <script type="module" src="{% static 'js/recuperacao.js' %}"></script>
+
 </body>
 </html>
