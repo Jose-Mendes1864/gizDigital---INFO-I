@@ -8,36 +8,8 @@
     <link rel="stylesheet" href="{% static 'css/milligram.recuper.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h2>Recuperar Senha</h2>
-        <p>Insira o codigo enviado no seu e-mail cadastrado</p>
-        <form action="{% url 'redefinir_senha'%}" method="POST" id="form">
-            {% csrf_token %}
-            <div class="code-inputs">
-                <input type="text" maxlength="1" required class="inputCodigo"> 
-                <input type="text" maxlength="1" required class="inputCodigo">
-                <input type="text" maxlength="1" required class="inputCodigo">
-                <input type="text" maxlength="1" required class="inputCodigo">
-                <input type="text" maxlength="1" required class="inputCodigo">
-                <input type="text" maxlength="1" required class="inputCodigo">
-                <input type="hidden" name="codigo" id="codigo" value="nada">
-            </div>
-            <button type="submit">Confirmar</button>
-        </form>
-    </div>
+  
 
-    <script>
-        let form =document.getElementById('form')
-        form.addEventListener('submit', ()=> {
-            let inputs = document.getElementsByClassName('inputCodigo')
-            let codigo = '' 
-            for(let i = 0; i < inputs.length; i++){
-                codigo += inputs[i].value
-
-            }
-            document.getElementById('codigo').value = codigo
-              
-        })
-    </script> 
+   
 </body>
 </html>

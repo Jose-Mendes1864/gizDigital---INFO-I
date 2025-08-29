@@ -8,8 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from config import settings
 from django.template.loader import render_to_string 
 import secrets
-
-print(">>> functions.py carregado")
+import threading #assincrona que da pro gasto
 
 def caminho_imagem(instance, filename):
   
@@ -31,7 +30,7 @@ def caminho_imagem(instance, filename):
     except Exception as e:
         print(f'O erro é {e}')
 
-def enviar_email(email_destinatario):
+def enviar_email(email_destinatario, codigo_aleatorio):
    
     try:
          # Informações do remetente
@@ -41,7 +40,7 @@ def enviar_email(email_destinatario):
         # Informações do destinatário
         assunto = 'Recuperação de senha'
 
-        codigo_aleatorio = ' '.join(str(secrets.randbelow(10)) for _ in range(6))
+       
 
         html_content = render_to_string('arquivoEmail.html', {'codigo': codigo_aleatorio})
         mensagem_simples= f'Ola, seu código é {codigo_aleatorio}'
@@ -60,8 +59,11 @@ def enviar_email(email_destinatario):
         servidor.login(email_remetente, senha)
         servidor.send_message(msg)
         servidor.quit()
-        return codigo_aleatorio
+        
     except Exception as e:
         return f'error+{e}'
     
 
+def enviar_email_async(email_destinatario,codigo_aleatorio):
+    thread = threading.Thread(target=enviar_email, args=(email_destinatario,codigo_aleatorio))
+    thread.start()

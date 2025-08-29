@@ -7,7 +7,7 @@ from django.contrib.messages import constants
 from django.contrib import auth
 
 from .models import  Usuario
-from .functions import enviar_email
+from .functions import enviar_email_async
 import secrets
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -100,44 +100,43 @@ class CadastrarView(View):
 class ForgetView(View):
     template_name= 'recuperacao.html'
     def get(self,request, *args, **kwargs):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {'carregar':'email_insert'})
     def post(self,request, *args, **kwargs):
-        email = request.POST.get('email').strip()
-        if Usuario.objects.filter(email=email):
-            token  = enviar_email(email_destinatario=email)
-            if token.split('+')[0] == 'error':
-                messages.add_message(request, constants.ERROR, f"Erro do servidor {token.split('+')[1]}")
-                return render(request, self.template_name)
-            request.session['emailNovaSenha'] = email
-            request.session['token'] = token #salvar isso em outra coisa, que se abrir o inspecionar
-            return render(request,'recuperacao_cod.html',{'token': token} )
+        acao = request.GET.get('acao')
 
-        else:
-            messages.add_message(request, constants.ERROR, 'Email não correspondente a nenhuma conta')
+        if acao == 'insert_code':
+            email = request.POST.get('email').strip()
+            usuario =Usuario.objects.filter(email=email)
+            if usuario:
+                
+                token = ' '.join(str(secrets.randbelow(10)) for _ in range(6))
+                enviar_email_async(email_destinatario=email, codigo_aleatorio=token)
+                if token.split('+')[0] == 'error':
 
-        return render(request, 'recuperacao.html')
-class RedefinirSenha(View):
-    def get(self, request,*args,**kwargs):
-        return HttpResponse('get')
-    def post(self, request,*args,**kwargs):
-        codigo = request.POST.get('codigo')
-        codigo_correto = ''.join(request.session.get('token').split())
-        # if codigo == codigo_correto:  
-            #esse auqi é a condição verdadeira, descomentar depois
-        if codigo == '123456':
-            return redirect('novasenha')   
-        return HttpResponse(f'codigo {codigo} diferente de {codigo_correto}')
-
-def novasenha(request):
-    if request.method == 'GET':
-        email = request.session.get('emailNovaSenha')
-        user = Usuario.objects.get(email=email)
-        return render(request,'recuperacao_newPass.html', {'user': user})
-    elif request.method == 'POST':
-        return HttpResponse('teste')
+                    messages.add_message(request, constants.ERROR, f"Erro do servidor {token.split('+')[1]}")
+                    return render(request, self.template_name)
+                
+                request.session['emailNovaSenha'] = email
+                request.session['token'] = token #salvar isso em outra coisa, que se abrir o inspecionar
+             
+                return render(request,'recuperacao.html',{'token': token, 'carregar':'code_insert', 'user':usuario[0]})
+            
+            else:
+                
+                messages.add_message(request, constants.ERROR, 'Email não correspondente a nenhuma conta')
         
+        elif acao =='new_password':
+            usuario_email =request.session.get('emailNovaSenha')
+            usuario = Usuario.objects.get(email=usuario_email)
+            return render(request, 'recuperacao.html', {'carregar':'new_password', 'user':usuario}) # nem precisava de valor já que ta no else mas melhor colcoar
+        
+class RedefinirSenha(View):
+    def get(self, request, *args, **kawrgs):
+        return HttpResponse('Deu get no redefinir senha')
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('Teste')
 
-
+        
 
 # InMemoryLoadedFile  -Armazena no Ram quando é menos de 2mb django usa ele
 # Temporary LoadedFile - >2.5 memoria usa isso
