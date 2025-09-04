@@ -134,7 +134,17 @@ class RedefinirSenha(View):
     def get(self, request, *args, **kawrgs):
         return HttpResponse('Deu get no redefinir senha')
     def post(self, request, *args, **kwargs):
-        return HttpResponse('Teste')
+        email = request.session.get('emailNovaSenha')
+        user = Usuario.objects.get(email=email)
+        senha = request.POST.get('senha')
+        user.set_password(senha)
+        user.save()
+        for _ in range(0,100000000): # só para enrolar um pouco, tava muito rápido a recarga
+            pass
+        user.save()
+        messages.add_message(request, constants.SUCCESS, "Senha redefinida com sucesso")
+
+        return  redirect('login')
 
         
 

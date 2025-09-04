@@ -23,7 +23,15 @@
     </header>
 
     <div class="profile-section">
-      <img src="{% static 'img/corujaJoseph-removebg-preview.png' %}" alt="Perfil" class="profile-pic" />
+      {% if user.foto %}
+                <img src="{{user.foto.url}}" alt="Perfil" class="profile-pic" />
+
+      {% else%}
+
+          <img src="{%static 'img/defaultFotoPerfil.jpg' %}" alt="Perfil" class="profile-pic" />
+
+      {% endif %}
+
       <div class="stars">
         <i class="far fa-star"></i>
         <i class="far fa-star"></i>
