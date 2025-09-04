@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
    
     biografia =models.TextField(null=True, blank=True)
     pasta_destino = models.CharField(max_length=100, default='usuario/foto', editable=False)
-    foto = models.FileField(upload_to=caminho_imagem)
+    foto = models.FileField(upload_to=caminho_imagem, default='usuario/foto/defaultFotoPerfil.jpg')
     pontuacao =models.FloatField(default=3, null=True, blank=True)
     #  data criação já possui
 

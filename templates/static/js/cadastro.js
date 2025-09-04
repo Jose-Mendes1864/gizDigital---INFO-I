@@ -13,12 +13,10 @@ function validaLogin(event){
         let message = document.querySelector('.message')
         message.innerHTML = 'As senhas não conincidem';
     }
-    else{
-        alert('iu')
-    }
-
-   
+  
 }
+
+
 
 document.querySelector(".imagem").addEventListener("change", function (event) {
     const file = event.target.files[0]; // pega o arquivo selecionado
@@ -34,3 +32,4 @@ document.querySelector(".imagem").addEventListener("change", function (event) {
       reader.readAsDataURL(file); // lê o arquivo como URL base64
     }
   });
+

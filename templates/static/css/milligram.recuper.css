@@ -35,5 +35,15 @@ h2, p, h1 {
   margin: 0 auto 0.6rem auto;
   margin-top: 1rem;
 }
+.container {
+  opacity: 0;
+  transform: translateX(100px); /* começa deslocado à direita */
+  animation: slideInLeft 0.6s ease forwards;
+}
 
-
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0); /* vai para a posição normal */
+  }
+}
