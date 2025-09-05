@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/milligram.quiz.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="quiz-container">
+
+
+        <form action="" method="POST" id="form">
+            {% csrf_token %}
+            {% for pergunta in perguntas %}
+
+            {% if pergunta.tipo_input|lower|cut:" " == "text" %}
+            <div class="perguntaContainer">
+                <h2 id="pergunta">{{pergunta.texto_pergunta}}</h2>
+                <input name="{{pergunta.titulo_pergunta}}" type="{{pergunta.tipo_input}}"
+                    id="{{pergunta.titulo_pergunta}}" placeholder="{{pergunta.placeholder}}" value=" " required>
+                <br>
+            </div>
+            {% elif pergunta.tipo_input|lower|cut:" " == 'select' %}
+
+            <div class="perguntaContainer" style="display: none;">
+                <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
+                <select name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}" required>
+                    <option value="" disabled selected></option>
+                    {% for op in opcoes %}
+
+                    {%if op.pergunta.titulo_pergunta == pergunta.titulo_pergunta %}
+                    <option value="{{op}}">{{op}}</option>
+                    {%endif%}
+                    {%endfor%}
+                </select>
+                <h1> colocar com filtro depois</h1>
+            </div>
+
+            {% elif pergunta.tipo_input|lower|cut:" " == 'textarea' %}
+            <div class="perguntaContainer">
+                <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
+                <br>
+
+                <textarea name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"></textarea>
+
+            </div>
+            {% elif pergunta.tipo_input|lower|cut:" " == 'checkbox' %}
+            <div class="perguntaContainer" style="display: none;">
+                {{pergunta.texto_pergunta}}
+                {% for op in opcoes %}
+
+                {%if op.pergunta.titulo_pergunta == pergunta.titulo_pergunta %}
+                <div>
+                    <label>
+                        <input type="{{pergunta.tipo_input}}" name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}">
+                        {{op.nome}}
+                    </label>
+                </div>
+
+
+                {%endif%}
+                {%endfor%}
+
+            </div>
+            {% else %}
+            caiu no else
+
+            {%endif%}
+            {% endfor %}
+            <button class="btn-proximo" id="btn-proximo" type="button">próximo</button> <!--Inserir o js aqui-->
+    </div>
+
+    </form>
+    <h1><a href="{% url 'sair' %}">Botao provisorio para sair daqui</a></h1>
+    <script src="{% static 'js/questionario.js'%}"></script>
+</body>
+
+</html>

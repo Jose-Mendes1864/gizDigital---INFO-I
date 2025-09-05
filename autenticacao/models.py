@@ -21,3 +21,35 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = 'email'  # define email comocampo para o auth.authenticate, memso asism é nessecssário username=email
     REQUIRED_FIELDS = ['username'] # são campo obrigatório ao criar o superusuario deixamos em branco porque um deles é o email mas já ta unique e é o username_field ali ent não precisa
+
+class Input(models.Model):
+    nome  = models.CharField(max_length=30)
+    def __str__(self):
+        return self.nome
+
+class PerguntaDoQuestionario(models.Model):
+    titulo_pergunta = models.CharField(max_length=40)
+    texto_pergunta =  models.CharField(max_length=700)
+    tipo_input = models.ForeignKey(Input, on_delete=models.DO_NOTHING)
+    placeholder  = models.CharField(max_length=50, default=" ", blank=True, null=True)
+    
+    def __str__(self):
+        return  self.titulo_pergunta
+class Opcao(models.Model):
+    nome = models.CharField(max_length=60)
+    pergunta = models.ForeignKey(PerguntaDoQuestionario, on_delete=models.CASCADE)
+
+    
+    def __str__(self):
+        return self.nome
+
+class PerguntaUsuario(models.Model):
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    pergunta = models.ForeignKey(PerguntaDoQuestionario, on_delete=models.CASCADE)
+    resposta = models.CharField(max_length=500)
+    def __str__(self):
+        return f'{self.user} - {self.pergunta.titulo_pergunta}'
+    
+class MaterialUsuarios(models.Model):
+    opcao = models.ForeignKey(Opcao, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)

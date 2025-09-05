@@ -6,11 +6,11 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib import auth
 
-from .models import  Usuario
+from .models import  Usuario,PerguntaDoQuestionario,Opcao,MaterialUsuarios, PerguntaUsuario
 from .functions import enviar_email_async
 import secrets
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 # class moldeView(View):
@@ -57,6 +57,8 @@ class CadastrarView(View):
         if request.user.is_authenticated:
             return redirect('indexComunidade')
         return render(request, 'cadastro.html')
+        return redirect('questionario')
+
     def post(self,request, *args, **kwargs):
         username = request.POST.get('username')
         email = request.POST.get('email')
@@ -91,7 +93,7 @@ class CadastrarView(View):
                         
             messages.add_message(request, constants.SUCCESS, "Usuario criado com sucesso, seja  bem-vindo")
             auth.login(request, user)
-            return render(request, 'questionario.html')
+            return redirect('questionario')
         except Exception as e:
             
             messages.add_message(request, constants.DEBUG, f'Erro interno do sitema {e}')
@@ -146,11 +148,49 @@ class RedefinirSenha(View):
 
         return  redirect('login')
 
+class Questionario(LoginRequiredMixin,View):
+    template_name = "questionario.html"
+    login_url = 'login'
+    def get(self, request, *args, **kawrgs):
+        perguntas =PerguntaDoQuestionario.objects.all()
+        opcoes = Opcao.objects.all()
+         
         
+        return render(request, 'questionario.html', {'perguntas': perguntas, 'opcoes': opcoes})
+    def post(self, request, *args, **kwargs):    
+        dados = request.POST.copy() #deixa mutável
 
+        dados = list(dados.items())
+        dados.pop(0)
+     
+        user = request.user
+        
+        for i  in dados:
+            key, value = i
+            
+            if key == 'material':
+                material = dados.getlist('material')
+                for m in material:
+                    material = MaterialUsuarios(
+                        opcao = m,
+                        usuario=user
+                    )
+                    m.save()
+
+                
+            else:
+                 
+                 p = PerguntaUsuario(
+                     user=user,
+                     pergunta= PerguntaDoQuestionario.objects.get(titulo_pergunta=key),
+                     resposta=value
+                 )
+                 p.save()
+
+        return redirect('comunidade')
+            
 # InMemoryLoadedFile  -Armazena no Ram quando é menos de 2mb django usa ele
 # Temporary LoadedFile - >2.5 memoria usa isso
-# 
 # 
 # 
 # 
