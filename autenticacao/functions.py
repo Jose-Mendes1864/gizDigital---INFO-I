@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 import secrets
 import threading #assincrona que da pro gasto
 
+
 def caminho_imagem(instance, filename):
   
     # Pega a extensão do arquivo original
@@ -67,3 +68,4 @@ def enviar_email(email_destinatario, codigo_aleatorio):
 def enviar_email_async(email_destinatario,codigo_aleatorio):
     thread = threading.Thread(target=enviar_email, args=(email_destinatario,codigo_aleatorio))
     thread.start()
+

@@ -23,13 +23,14 @@
   <div class="container">
       <section class="recommended">
       <h2>Comunidades Recomendadas:</h2>
-      <div class="card-group">
-        <h2><a href="{% url 'comunidade' %}">exemplo de redirecionamento</a></h2>
+      <div class="card-group" >
         <h2><a href="{% url 'sair' %}">Logout</a></h2>
         {% for comunidade in comunidades %}
-          <div class="card {{ comunidade.cor }}">
-            <div class="card-content">
-              <img src="{{ comunidade.imagem.url }}" alt="{{ comunidade.nome }}" />
+          
+        {% url 'comunidade' comunidade.id as url_comunidade %}        <!-- colocar isso para evitar confusão de aspas simples e duplas -->
+    <div class="card {{ comunidade.etiqueta }}" onclick="window.location.href='{{url_comunidade}}';">
+      <div class="card-content">
+              <img src="{{ comunidade.capa_comunidade.url }}" alt="{{ comunidade.nome }}" />
               <div>
                 <h3>{{ comunidade.nome }}</h3>
                 <p>{{ comunidade.membros.count }} membros</p>
@@ -64,5 +65,6 @@
       <i class="fas fa-plus"></i>
       <i class="fas fa-pencil-alt"></i>
     </footer>
+    
 </body>
 </html>

@@ -20,7 +20,8 @@ from  django.shortcuts import redirect
 from .views import  IndexComunidadeView, ComunidadeView, PerfilEdit
 urlpatterns = [
     path('', IndexComunidadeView.as_view(), name='indexComunidade'),
-    path('comunidade/', ComunidadeView.as_view(), name='comunidade'),
+    path('comunidade/<int:id_comunidade>/', ComunidadeView.as_view(), name='comunidade'),
+    path('comunidade/<int:id_comunidade>/<str:carregar>/', ComunidadeView.as_view(), name='carregar'),
     path('perfil/', PerfilEdit.as_view(), name='perfil'),
     
     

@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from django.contrib.messages import constants
 from django.contrib import messages
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -149,4 +150,4 @@ EMAIL_HOST_PASSWORD= 'phpl fvvr uyti rjab'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-# phpl fvvr uyti rjab
+# phpl fvvr uyti rjabz

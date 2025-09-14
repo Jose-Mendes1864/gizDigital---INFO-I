@@ -1,9 +1,9 @@
 from django.db import models
 from autenticacao.models import Usuario
 from enum import Enum
-
+from .functions import *
 # Create your models here.
-usuario_padrao = Usuario.objects.get_or_create(username='deletado')[0]
+
 class StatusEnum(Enum):
     RESOLVIDO = 'Resolvido'
     EM_ANDAMENTO = 'Em andamento'
@@ -12,10 +12,14 @@ class StatusEnum(Enum):
 class Etiqueta(models.Model):
     corRGB = models.CharField(max_length=13)
     nome = models.CharField(max_length=200)
+    def __str__(self):
+        return self.nome
 class Comunidade(models.Model):
     nome = models.CharField(max_length=60 )
     descricao = models.TextField(verbose_name='descrições')
     etiquetas = models.ManyToManyField(Etiqueta,related_name='comunidades')
+    membros = models.ManyToManyField(Usuario, related_name='comunidades')
+    capa_comunidade = models.FileField(upload_to='comunidade/capa')
 
     def __str__(self):
         return f'Comunidade - {self.nome}'
@@ -31,7 +35,7 @@ class Post(models.Model):
     data_criacao = models.DateTimeField()
 class Comentario(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, on_delete=models.SET_DEFAULT, default=usuario_padrao.id)
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_DEFAULT, default=get_usuario_padrao)
     criacao = models.DateTimeField()
     conteudo = models.TextField()
 class MotivoSuporte(models.Model):
@@ -40,7 +44,7 @@ class MotivoSuporte(models.Model):
         return self.motivo
     
 class RequisicaoSuporte(models.Model):
-    motivo = models.ForeignKey(MotivoSuporte, on_delete=models.SET_NULL)
+    motivo = models.ForeignKey(MotivoSuporte, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, choices= [(tag.name, tag.value) for tag in StatusEnum])
     descricao = models.TextField()
     foto = models.FileField(upload_to='usuario/requisicao', null=True, blank=True)
