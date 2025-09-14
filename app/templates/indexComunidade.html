@@ -28,14 +28,22 @@
         {% for comunidade in comunidades %}
           
         {% url 'comunidade' comunidade.id as url_comunidade %}        <!-- colocar isso para evitar confusão de aspas simples e duplas -->
-    <div class="card {{ comunidade.etiqueta }}" onclick="window.location.href='{{url_comunidade}}';">
+    <div class="card {{ comunidade.etiqueta }}" >
+                                      
       <div class="card-content">
               <img src="{{ comunidade.capa_comunidade.url }}" alt="{{ comunidade.nome }}" />
               <div>
                 <h3>{{ comunidade.nome }}</h3>
                 <p>{{ comunidade.membros.count }} membros</p>
                 <p class="desc">{{ comunidade.descricao|truncatewords:20 }}</p>
+                {% for e in comunidade.etiquetas.all %}
+          
+                  <div class="etiqueta--{{e.corRGB}}">
+             {{e.nome}}</div>
+                {% endfor%}
+                 <button><a href="{% url 'comunidade' comunidade.id%} ">entrar</a></button>
               </div>
+             
             </div>
           </div>
         {% endfor %}
@@ -65,6 +73,22 @@
       <i class="fas fa-plus"></i>
       <i class="fas fa-pencil-alt"></i>
     </footer>
-    
+    <script>
+      document.addEventListener("DOMContentLoaded", () =>{
+        
+            let etiquetas_div = document.querySelectorAll('div[class*="etiqueta"]')
+            for(let i = 0; i < etiquetas_div.length;i++){
+             
+                    let classes = etiquetas_div[i].classList; // pega todas as classes como DOMTokenList
+                   
+                    let cor = Array.from(classes).find(c => c.startsWith('etiqueta--'));
+                    
+                    etiquetas_div[i].style.backgroundColor  = cor.split('--')[1];
+                   
+              
+            }
+      });
+       
+    </script>
 </body>
 </html>

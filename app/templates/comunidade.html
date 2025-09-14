@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ comunidade.nome }}</title>
+  <link rel="stylesheet" href="{% static 'css/milligram.cBase.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'css/milligram.evento.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/milligram.submeter.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/milligram.material.css' %}" />
+
+
+
+
+</head>
+
+<body class="comunidade {{ comunidade.slug }}">
+  <header class="comunidade-header">
+    <img src="{{ comunidade.capa_comunidade.url }}" alt="Imagem da comunidade" class="comunidade-img" />
+    <div class="comunidade-info" href="">
+      <h1>{{ comunidade.nome }}</h1>
+      <p>{{ comunidade.descricao }}</p>
+      <form action="{% url 'modifica_joined' comunidade.id carregar 'modificar_seguidor' %}" method="GET">
+   
+           {% csrf_token %}
+             <button class="btn-junte-se 
+                              {%if user_joined == True %} btn-juntado {%endif%}">
+                              <!-- coloquei o css de btn-juntado dem cBase -->
+                                {%if user_joined == False %}
+                                        Junte-se
+                                {% else%}
+                                        Participando
+                                {%endif%}
+              </button>
+        </form>
+      <div class="comunidade-meta">
+        <span>{{ comunidade.membros.count }} membros</span>
+        <span>{{ comunidade.posts.count }} postagens</span>
+      </div>
+    </div>
+    <style>
+      /* sstyle provisório */
+    </style>
+  </header>
+  <button><a href="{% url 'indexComunidade' %}">Saia aqui</a></button>
+  <nav class="comunidade-tabs tabs">
+    <button> <a href="{% url 'carregar' comunidade.id 'posts' %}"
+        class=" {% if carregar == 'posts' %}active{% endif %}">postagens</a>
+    </button>
+    <button> <a href="{% url 'carregar'  comunidade.id 'materiais' %}"
+        class=" {% if carregar == 'materiais' %}active{% endif %}">materiais</a>
+    </button>
+    <button> <a href="{% url 'carregar'  comunidade.id 'eventos' %}"
+        class=" {% if carregar == 'eventos' %}active{% endif %}">eventos</a>
+    </button>
+
+
+  </nav>
+  <main class="comunidade-posts">
+
+
+    {% if carregar == 'posts' %}
+
+
+    {% for post in comunidade.posts.all %}
+    <div class="post">
+      <div class="post-header">
+        <img src="{{ post.autor.foto.url }}" alt="{{ post.autor.nome }}" class="avatar" />
+        <div>
+          <strong>{{ post.autor.nome }}</strong>
+          <span class="data">{{ post.data|date:"d M" }}</span>
+        </div>
+      </div>
+      <p>{{ post.conteudo }}</p>
+      {% if post.imagem %}
+      <img src="{{ post.imagem.url }}" alt="Imagem do post" class="post-img" />
+      {% endif %}
+    </div>
+    {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {%elif carregar == 'materiais' %}
+
+
+
+
+    <div class="container">
+      <nav class="tabs">
+        <button>nº elementos</button>
+        <button>nº elementos</button>
+        <button>postagens</button>
+        <button class="active">materiais</button>
+        <button>eventos</button>
+      </nav>
+
+      <section class="materiais">
+        <div class="card">
+          <h3>titulomaterial</h3>
+          <div class="descricao">espaço onde vai aparecer a descrição</div>
+          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
+          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
+        </div>
+
+        <div class="card">
+          <h3>titulomaterial</h3>
+          <div class="descricao">espaço onde vai aparecer a descrição</div>
+          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
+          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
+        </div>
+
+        <div class="card">
+          <h3>titulomaterial</h3>
+          <div class="descricao">espaço onde vai aparecer a descrição</div>
+          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
+          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
+        </div>
+      </section>
+
+      <button class="add-btn"><i class="fas fa-plus"></i></button>
+
+      <div class="popup material">
+        <h2>Mandar Material</h2>
+        <input type="text" placeholder="Título do material" />
+        <textarea placeholder="Descrição do material"></textarea>
+        <input type="text" placeholder="Etiquetas (separadas por vírgula)" />
+        <input type="text" placeholder="Link do material" />
+        <button class="submit-btn">Enviar</button>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {%elif carregar == 'eventos' %}
+    <p>Eventos aqui</p>
+    <div class="container">
+
+
+      <section class="eventos">
+        <div class="evento-card">
+          <h3>Título da reunião</h3>
+          <div class="descricao">espaço para descrição da reunião</div>
+          <div class="link-meet">espaço para inserir o link do Google Meet</div>
+          <div class="info">
+            <span class="data">00/00/00</span>
+            <span class="hora">12:34</span>
+          </div>
+        </div>
+
+        <div class="evento-card">
+          <h3>Título da reunião</h3>
+          <div class="descricao">espaço para descrição da reunião</div>
+          <div class="link-meet">espaço para inserir o link do Google Meet</div>
+          <div class="info">
+            <span class="data">00/00/00</span>
+            <span class="hora">12:34</span>
+          </div>
+        </div>
+
+        <div class="evento-card">
+          <h3>Título da reunião</h3>
+          <div class="descricao">espaço para descrição da reunião</div>
+          <div class="link-meet">espaço para inserir o link do Google Meet</div>
+          <div class="info">
+            <span class="data">00/00/00</span>
+            <span class="hora">12:34</span>
+          </div>
+        </div>
+      </section>
+
+      <button class="add-btn"><i class="fas fa-plus"></i></button>
+
+      <div class="popup evento">
+        <h2>Criar Evento</h2>
+        <input type="text" placeholder="Título da reunião" />
+        <textarea placeholder="Descrição da reunião"></textarea>
+        <input type="text" placeholder="Link do Google Meet" />
+        <div class="inline-fields">
+          <input type="date" />
+          <input type="time" />
+        </div>
+        <button class="submit-btn">Criar</button>
+      </div>
+    </div>
+    {%endif%}
+  </main>
+
+
+</body>
+
+</html>
+<!-- Fala josé! Essa aqui foi a pagina que definitivamente me deu mais trabalho, qualquer pergunta, pode entrar em contato comigo, mas acho que voce vai entender, eu que quebrei a cabeça kskskks -->

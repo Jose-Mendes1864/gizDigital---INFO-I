@@ -22,7 +22,10 @@ urlpatterns = [
     path('', IndexComunidadeView.as_view(), name='indexComunidade'),
     path('comunidade/<int:id_comunidade>/', ComunidadeView.as_view(), name='comunidade'),
     path('comunidade/<int:id_comunidade>/<str:carregar>/', ComunidadeView.as_view(), name='carregar'),
+    path('comunidade/<int:id_comunidade>/<str:carregar>/<str:modificar_seguidor>', ComunidadeView.as_view(), name='modifica_joined'),
     path('perfil/', PerfilEdit.as_view(), name='perfil'),
     
+
+   
     
 ]

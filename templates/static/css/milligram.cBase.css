@@ -104,3 +104,6 @@ a {
 .selected{
   background-color: rgb(147, 108, 186);
 }
+.btn-juntado{
+  background-color: #000000 !important;
+}
