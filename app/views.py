@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario
+from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,MaterialUsuarios
 from .models import Comunidade
 from .functions import tiraCamelCase
 # Create your views here.
@@ -67,6 +67,12 @@ class PerfilEdit(LoginRequiredMixin,View):
         dados_usuario['Nome de usuario'] = request.user.username
         dados_usuario['date_joined'] = request.user.date_joined
         dados_usuario['Email'] = request.user.email 
+        objects_materiais = MaterialUsuarios.objects.filter(usuario=request.user)
+        lista_material = []
+        for o in objects_materiais:
+            lista_material.append(o.opcao)
+
+        dados_usuario['materiais'] = lista_material
         print(dados_usuario)
         print(dados_usuario)
         chaves_ordenadas = ['Biografia','Nome completo', 'Nome de usuario', 'Idade','Email', 'Area do saber', 'Anos experiencia',  'Material','Notificacoes', 'date_joined']
