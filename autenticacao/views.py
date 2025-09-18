@@ -167,20 +167,34 @@ class Questionario(LoginRequiredMixin,View):
         return render(request, 'questionario.html', {'perguntas': perguntas, 'opcoes': opcoes})
     def post(self, request, *args, **kwargs):    
         dados = request.POST.copy() #deixa mutável
-
-        dados = list(dados.items())
-        dados.pop(0)
-     
-        user = request.user
+        dados = dict(dados)
         
-        for i  in dados:
-            key, value = i
+        dados_sem_csrf = {}
+        cont = 0
+        for i, j in dados.items():
+            if cont == 0:
+                cont+=1
+                continue
+           
+            dados_sem_csrf[i] = j
+        dados = dados_sem_csrf
+       
+            
+
+        user = request.user
+        print(dados)
+        for key, value in dados.items():
+            value = value[0].strip()
             
             if key == 'material':
-                material = dados.getlist('material')
+         
+                material = dados['material']
+                print(material)
                 for m in material:
-                    material = MaterialUsuarios(
-                        opcao = m,
+                    material_selecionado = Opcao.objects.get(nome=m)
+                    print(f'Valor de m {material_selecionado}')
+                    m = MaterialUsuarios(
+                        opcao = material_selecionado,
                         usuario=user
                     )
                     m.save()
@@ -195,7 +209,7 @@ class Questionario(LoginRequiredMixin,View):
                  )
                  p.save()
 
-        return redirect('comunidade')
+        return redirect('indexComunidade')
             
 # InMemoryLoadedFile  -Armazena no Ram quando é menos de 2mb django usa ele
 # Temporary LoadedFile - >2.5 memoria usa isso
