@@ -13,7 +13,7 @@ body {
 
 .container {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   padding: 20px;
 }
 
@@ -58,8 +58,22 @@ header .save {
 .stars {
   margin-top: 10px;
   font-size: 1.5rem;
-  color: #333;
 }
+
+.stars .estrela {
+  color: #ccc; /* cor padrão */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.stars .estrela.pintada {
+  color: gold; /* estrela pintada */
+}
+
+/* .stars .estrela.pintada,
+.stars .estrela[style] {
+  color: gold !important;
+} */
 
 .form-section {
   display: flex;
@@ -69,13 +83,18 @@ header .save {
 
 .form-row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap; /* permite quebrar linha */
   gap: 15px;
 }
 
-.form-group {
+.form-group-bio {
+  flex: 5 5 calc(100% - 30px); /* duas colunas com gap */
   display: flex;
   flex-direction: column;
+}
+
+.form-group {
+  flex: 1 1calc(50% - 15px); /* duas colunas com gap */
 }
 
 label {
@@ -83,20 +102,15 @@ label {
   margin-bottom: 5px;
 }
 
-input {
+input, textarea {
   padding: 10px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
 }
 
-/* Tela maior: layout em duas colunas */
-@media (min-width: 600px) {
-  .form-row {
-    flex-direction: row;
-  }
-
-  .form-group {
-    flex: 1;
-  }
+textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
 }

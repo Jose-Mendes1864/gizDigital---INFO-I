@@ -25,55 +25,59 @@
     
 
     <form class="form-section">
+
+      <!-- Perfil + estrelas -->
       <div class="profile-section">
-      {% if user.foto %}
-                <img src="{{user.foto.url}}" alt="Perfil" class="profile-pic" />
-
-      {% else%}
-
-          <img src="{%static 'img/defaultFotoPerfil.jpg' %}" alt="Perfil" class="profile-pic" />
-
-      {% endif %}
-
-      <input type="file" name="fotoDePerfil">
-
-      <div class="stars">
-
-        <i class="far fa-star estrela"></i>
-        <i class="far fa-star estrela"></i>
-        <i class="far fa-star estrela"></i>
-        <i class="far fa-star estrela"></i>
-        <i class="far fa-star estrela"></i>
+        {% if user.foto %}
+          <img src="{{user.foto.url}}" alt="Perfil" class="profile-pic" />
+        {% else %}
+          <img src="{% static 'img/defaultFotoPerfil.jpg' %}" alt="Perfil" class="profile-pic" />
+        {% endif %}
+        <input type="file" name="fotoDePerfil" />
+        <div class="stars">
+          <i class="far fa-star estrela"></i>
+          <i class="far fa-star estrela"></i>
+          <i class="far fa-star estrela"></i>
+          <i class="far fa-star estrela"></i>
+          <i class="far fa-star estrela"></i>
+        </div>
       </div>
-    </div>
+    
+      <!-- Linha com inputs e biografia -->
       <div class="form-row">
         
-      
-      <div>
-        <label for="">Biografia: </label>
-  
-        <textarea name="" id="" value="">{{dados_usuario.Biografia}}</textarea>
-      </div>
-       <div class="form-group">
+        <!-- Biografia
+        <div class="form-group">
+          <label for="">Biografia:</label>
+          <textarea name="biografia">{{dados_usuario.Biografia}}</textarea>
+        </div> -->
+    
+        <!-- Outros campos -->
         {% for key,value in dados_usuario.items %}
-        {% if key != 'date_joined' and key != 'Biografia' %}
-        <div>
-          <label for="">{{key}}</label>
-          <input type="text" value="{{value}}">
-        </div>
-        {% endif%}
-        
-
-        {% endfor %}
-         
-          <div>        
-             <label>Primeiro login</label>  
-            <input type="text" value='{{dados_usuario.date_joined|date:"d/m/y"}}' disabled />
-
+          {% if key != 'date_joined' and key != 'Biografia' %}
+          <div class="form-group">
+            <label for="">{{key}}</label>
+            <input type="text" value="{{value}}">
           </div>
+          {% endif %}
+        {% endfor %}
+    
+        <!-- Primeiro login -->
+        <div class="form-group">
+          <label>Primeiro login</label>
+          <input type="text" value='{{dados_usuario.date_joined|date:"d/m/y"}}' disabled />
         </div>
-      
+
+         <!-- Biografia -->
+         <div class="form-group-bio">
+          <label for="">Biografia:</label>
+          <textarea name="biografia">{{dados_usuario.Biografia}}</textarea>
+        </div>
+    
+      </div>
+    
     </form>
+    
   </div>
 
   <script>
@@ -84,10 +88,11 @@
     let pontuacao = '{{user.pontuacao}}'
     pontuacao = parseInt(pontuacao)
     for(let i = 0; i < pontuacao; i++ ){
-      estrelas[i].style.backgroundColor = '#FFFF00'
+      estrelas[i].classList.add('pintada')
     }
 
 });
+
   </script>
 </body>
 
