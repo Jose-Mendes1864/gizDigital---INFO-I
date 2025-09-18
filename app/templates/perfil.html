@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" >
     <header>
       <button class="back" >
         <a href="{% url 'indexComunidade' %}" class="back">
@@ -22,7 +22,10 @@
       <button class="save">Save</button>
     </header>
 
-    <div class="profile-section">
+    
+
+    <form class="form-section">
+      <div class="profile-section">
       {% if user.foto %}
                 <img src="{{user.foto.url}}" alt="Perfil" class="profile-pic" />
 
@@ -32,48 +35,60 @@
 
       {% endif %}
 
+      <input type="file" name="fotoDePerfil">
+
       <div class="stars">
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
+
+        <i class="far fa-star estrela"></i>
+        <i class="far fa-star estrela"></i>
+        <i class="far fa-star estrela"></i>
+        <i class="far fa-star estrela"></i>
+        <i class="far fa-star estrela"></i>
       </div>
     </div>
+      <div class="form-row">
+        
+      
+      <div>
+        <label for="">Biografia: </label>
+  
+        <textarea name="" id="" value="">{{dados_usuario.Biografia}}</textarea>
+      </div>
+       <div class="form-group">
+        {% for key,value in dados_usuario.items %}
+        {% if key != 'date_joined' and key != 'Biografia' %}
+        <div>
+          <label for="">{{key}}</label>
+          <input type="text" value="{{value}}">
+        </div>
+        {% endif%}
+        
 
-    <form class="form-section">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
+        {% endfor %}
+         
+          <div>        
+             <label>Primeiro login</label>  
+            <input type="text" value='{{dados_usuario.date_joined|date:"d/m/y"}}' disabled />
+
+          </div>
         </div>
-        <div class="form-group">
-          <label>Nome de usuário</label>
-          <input type="text" placeholder="" value="{{user.username}}" />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>E-mail</label>
-          <input type="text" value="{{user.email}}" />
-        </div>
-        <div class="form-group">
-          <label>Primeiro login</label>
-          <input type="text" value='{{user.date_joined|date:"d/m/y"}}' disabled />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
-        </div>
-        <div class="form-group">
-          <label>Full name</label>
-          <input type="text" placeholder="nomeexemplo" />
-        </div>
-      </div>
+      
     </form>
   </div>
+
+  <script>
+   
+    window.addEventListener('load', function() {
+    // Passando o valor do servidor
+    let estrelas =  document.querySelectorAll('.estrela')
+    let pontuacao = '{{user.pontuacao}}'
+    pontuacao = parseInt(pontuacao)
+    for(let i = 0; i < pontuacao; i++ ){
+      estrelas[i].style.backgroundColor = '#FFFF00'
+    }
+
+});
+  </script>
 </body>
 
 </html>

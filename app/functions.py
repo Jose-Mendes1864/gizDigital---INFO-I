@@ -7,3 +7,13 @@ def get_usuario_padrao():
         "password": "123456"
     })
     return usuario.id
+
+def tiraCamelCase(texto):
+    corrigido = ''
+    for i in texto:
+        if i.isupper():
+            corrigido+= ' ' + i.lower()
+        else:
+            corrigido+=i
+    return corrigido.capitalize()
+

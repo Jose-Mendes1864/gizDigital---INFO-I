@@ -9,11 +9,10 @@ class Usuario(AbstractUser):
     # is_active supre o statusPerfil
     # usrname o django auth já temmpo
    
-    nome_completo = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(unique=True)
     # seha o django já tem
    
-    biografia =models.TextField(null=True, blank=True)
+   
     pasta_destino = models.CharField(max_length=100, default='usuario/foto', editable=False)
     foto = models.FileField(upload_to=caminho_imagem, default='usuario/foto/defaultFotoPerfil.jpg')
     pontuacao =models.FloatField(default=3, null=True, blank=True)
@@ -32,7 +31,7 @@ class PerguntaDoQuestionario(models.Model):
     texto_pergunta =  models.CharField(max_length=700)
     tipo_input = models.ForeignKey(Input, on_delete=models.DO_NOTHING)
     placeholder  = models.CharField(max_length=50, default=" ", blank=True, null=True)
-    
+    aparecer_no_perfil = models.BooleanField(default=True)
     def __str__(self):
         return  self.titulo_pergunta
 class Opcao(models.Model):

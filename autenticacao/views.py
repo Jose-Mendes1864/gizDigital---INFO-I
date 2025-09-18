@@ -25,15 +25,19 @@ class IndexView(View):
             return redirect('indexComunidade')
         return render(request, 'index.html')
     def post(self,request, *args, **kwargs):
+        
         return HttpResponse('Teste')
     
 class LoginView(View):
     def get(self,request, *args, **kwargs):
         if request.user.is_authenticated:
+            # combina a pesquisa + o request .user
+         
             return redirect('indexComunidade')
         return render(request, 'login.html')
     def post(self,request, *args, **kwargs):
         if request.user.is_authenticated:
+       
             return redirect('indexComunidade')
  
         email = request.POST.get('email').strip()
@@ -47,7 +51,11 @@ class LoginView(View):
             messages.add_message(request, constants.ERROR, 'Por favor insira email e senha corretos')
             return redirect('login')
         else:
+       
+                
             auth.login(request, usuario)
+            
+          
 
             return redirect('indexComunidade')
     

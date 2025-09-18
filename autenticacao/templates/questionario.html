@@ -49,7 +49,7 @@
                 <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
                 <br>
 
-                <textarea name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"></textarea>
+                <textarea required name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"></textarea>
 
             </div>
             {% elif pergunta.tipo_input|lower|cut:" " == 'checkbox' %}
@@ -60,7 +60,7 @@
                 {%if op.pergunta.titulo_pergunta == pergunta.titulo_pergunta %}
                 <div>
                     <label>
-                        <input type="{{pergunta.tipo_input}}" name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}">
+                        <input type="{{pergunta.tipo_input}}" name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}" required>
                         {{op.nome}}
                     </label>
                 </div>
