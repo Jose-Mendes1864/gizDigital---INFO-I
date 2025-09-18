@@ -61,7 +61,7 @@ header .save {
 }
 
 .stars .estrela {
-  color: #ccc; /* cor padrão */
+  color: #e4e1e1; /*padrão */
   cursor: pointer;
   transition: color 0.3s;
 }
@@ -94,7 +94,9 @@ header .save {
 }
 
 .form-group {
-  flex: 1 1calc(50% - 15px); /* duas colunas com gap */
+  flex: 1 1 calc(50% - 20px); /* duas colunas com gap */
+  display: flex;
+  flex-direction: column;
 }
 
 label {
