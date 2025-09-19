@@ -1,7 +1,7 @@
 from django.db import models
 from autenticacao.models import Usuario
 from enum import Enum
-from .functions import *
+from .functionsModels import get_usuario_padrao
 # Create your models here.
 
 class StatusEnum(Enum):
@@ -19,7 +19,9 @@ class Comunidade(models.Model):
     descricao = models.TextField(verbose_name='descrições')
     etiquetas = models.ManyToManyField(Etiqueta,related_name='comunidades')
     membros = models.ManyToManyField(Usuario, related_name='comunidades')
+  
     capa_comunidade = models.FileField(upload_to='comunidade/capa')
+
 
     def __str__(self):
         return f'Comunidade - {self.nome}'
@@ -48,3 +50,10 @@ class RequisicaoSuporte(models.Model):
     status = models.CharField(max_length=20, choices= [(tag.name, tag.value) for tag in StatusEnum])
     descricao = models.TextField()
     foto = models.FileField(upload_to='usuario/requisicao', null=True, blank=True)
+class Arquivo(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    comunidade = models.ForeignKey(Comunidade, on_delete=models.CASCADE)
+    descricao = models.CharField(max_length=100)
+    titulo = models.CharField(max_length=100)
+    arquivo = models.FileField(upload_to='comunidade/arquivos')
+    ext = models.CharField(max_length=10,blank=True, null=True )

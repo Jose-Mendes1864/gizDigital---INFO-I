@@ -72,6 +72,7 @@ class CadastrarView(View):
         email = request.POST.get('email')
         senha = request.POST.get('senha')
         foto = request.FILES.get('imagem')
+        
         print(foto)
         if(' ' in senha):
             messages.add_message(request, constants.WARNING, "Não é possível cadastrar uma senha com espaços em branco")

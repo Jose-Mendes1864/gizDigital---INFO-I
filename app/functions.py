@@ -1,12 +1,7 @@
 from autenticacao.models import Usuario
 from django.shortcuts import HttpResponse
-def get_usuario_padrao():
-    from autenticacao.models import Usuario
-    usuario, _ = Usuario.objects.get_or_create(username="usuario_padrao", defaults={
-        "email": "usuario@padrao.com",
-        "password": "123456"
-    })
-    return usuario.id
+from .models import Arquivo
+
 
 def tiraCamelCase(texto):
     corrigido = ''
@@ -17,3 +12,13 @@ def tiraCamelCase(texto):
             corrigido+=i
     return corrigido.capitalize()
 
+def pega_dados_comunidade(carrega, id_comunidade):
+    dados = ''
+    if carrega == 'posts':
+        pass
+    elif carrega == 'eventos':
+        pass
+    elif carrega == 'materiais':
+        dados = Arquivo.objects.filter(comunidade__id = int(id_comunidade))
+
+    return dados

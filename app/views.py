@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,MaterialUsuarios
-from .models import Comunidade
-from .functions import tiraCamelCase
+from .models import Comunidade, Arquivo
+from .functions import tiraCamelCase, pega_dados_comunidade
+import os
 # Create your views here.
 
 class IndexComunidadeView(LoginRequiredMixin,View):
@@ -17,7 +18,7 @@ class IndexComunidadeView(LoginRequiredMixin,View):
     
       
 
-class ComunidadeView(View):
+class ComunidadeView(LoginRequiredMixin,View):
     def get(self, request,id_comunidade, *args, **kwargs):
         if kwargs:
             
@@ -32,17 +33,46 @@ class ComunidadeView(View):
 
         else:
             carregar = 'posts'
+        dados = pega_dados_comunidade(carregar, id_comunidade)
         
         comunidade = Comunidade.objects.get(id=int(id_comunidade))
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
-        
+       
        
 
-        return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'user_joined':user_joinded})
-    
-class PerfilEdit(LoginRequiredMixin,View):
+        return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
+
+class EnviarComunidadeView(LoginRequiredMixin, View):
+    def get(self, request, *args,**kwargs):
+        pass
+    def post(self, request,id_comunidade, carregar,  *args,**kwargs):
+        if carregar == 'materiais':
+            titulo = request.POST.get('titulo')
+            material = request.POST.get('material')
+            descricao = request.POST.get('descricao')
+            material = material.replace(' ', '_')
+            nome, ext = os.path.splitext(material)
+            a = Arquivo(
+                usuario=request.user,
+                comunidade= Comunidade.objects.get(id=id_comunidade),
+                titulo=titulo,
+                arquivo=material,
+                descricao=descricao,
+                ext = ext
+            )
+            a.save()
+            return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
+        
+        return HttpResponse('oi')
+
+        
+
+
+
+
+class PerfilEditView(LoginRequiredMixin,View):
 
 
     template_name = "perfil.html"
@@ -85,3 +115,8 @@ class PerfilEdit(LoginRequiredMixin,View):
             print(f'Erro pois algum dado ali de chaves ordenadas não existe mais ou foi modificada erro: {e}')
         return render(request, self.template_name, {'user': request.user, 'dados_usuario': dados_usuario_ordenado}) 
     
+class VerPerfilView(LoginRequiredMixin, View):
+    def get(self, request, id,*args, **kwargs):
+        return HttpResponse(f'Ver pefil {id}')
+    def post(self, request, id,*args, **kwargs):
+        pass

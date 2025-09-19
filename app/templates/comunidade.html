@@ -118,38 +118,44 @@
       </nav>
 
       <section class="materiais">
+        {% for material in dados %}
         <div class="card">
-          <h3>titulomaterial</h3>
-          <div class="descricao">espaço onde vai aparecer a descrição</div>
-          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
-          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
+         <div class="infosMaterial">
+           <img src="{{material.usuario.foto.url}}" alt="fotoDequemFezOpost">
+           <h3><a href="{% url 'view_profile' material.usuario.id %}">{{material.usuario}}</a></h3>
+         </div>
+          <div class="descricao">{{material.descricao}}</div>
+          <div class="etiquetas">{{material.ext}}</div>
+         
+          <a href="{{material.arquivo.url}}"  class="link-material btn-{{material.ext}}">
+          📄 Vizualizar {{materia.ext}}
+        </a> 
+        <a href="{{material.arquivo.url}}"  download="" class="link-material btn-{{material.ext}}">
+          seta Baixar {{materia.ext}}
+        </a> 
+      
         </div>
+        {% endfor %}
 
-        <div class="card">
-          <h3>titulomaterial</h3>
-          <div class="descricao">espaço onde vai aparecer a descrição</div>
-          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
-          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
-        </div>
-
-        <div class="card">
-          <h3>titulomaterial</h3>
-          <div class="descricao">espaço onde vai aparecer a descrição</div>
-          <div class="etiquetas">espaço onde vai aparecer as etiquetas</div>
-          <div class="link-material">espaço onde vai aparecer o "link" do material, como se fosse um botão</div>
-        </div>
+      
       </section>
 
       <button class="add-btn"><i class="fas fa-plus"></i></button>
 
-      <div class="popup material">
+    <form action="{% url 'enviar_comunidade' comunidade.id carregar %}" method="POST">
+      
+            {% csrf_token %}
+
+        <div class="popup material">
         <h2>Mandar Material</h2>
-        <input type="text" placeholder="Título do material" />
-        <textarea placeholder="Descrição do material"></textarea>
-        <input type="text" placeholder="Etiquetas (separadas por vírgula)" />
-        <input type="text" placeholder="Link do material" />
+        <input name="titulo" type="text" placeholder="Título do material" />
+          <input name="ext" type="text" placeholder="Que tipo de arquivo você esta mandando preciso colcoar um selec aquinão fiz nada aqui ainda" />
+
+        <textarea name="descricao" placeholder="Descrição do material"></textarea>
+        <input name="material" type="file" placeholder="escolha um arquivo" />
         <button class="submit-btn">Enviar</button>
       </div>
+    </form>
     </div>
 
 
@@ -179,7 +185,8 @@
 
 
 
-    {%elif carregar == 'eventos' %}
+
+    {% elif carregar == 'eventos' %}
     <p>Eventos aqui</p>
     <div class="container">
 
