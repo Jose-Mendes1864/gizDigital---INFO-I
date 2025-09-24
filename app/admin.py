@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Comunidade)
 admin.site.register(Etiqueta)
 admin.site.register(Arquivo)
+admin.site.register(Reuniao)

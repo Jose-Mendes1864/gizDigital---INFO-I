@@ -3,7 +3,7 @@ from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,MaterialUsuarios
-from .models import Comunidade, Arquivo
+from .models import Comunidade, Arquivo,Post
 from .functions import tiraCamelCase, pega_dados_comunidade
 import os
 # Create your views here.
@@ -23,6 +23,22 @@ class ComunidadeView(LoginRequiredMixin,View):
         if kwargs:
             
             carregar = kwargs.get('carregar', 'nada')
+        else:
+            carregar = 'posts'
+        dados = pega_dados_comunidade(carregar, id_comunidade)
+        
+        comunidade = Comunidade.objects.get(id=int(id_comunidade))
+        comunidade.posts= Post.objects.filter(id=int(id_comunidade))
+        user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
+                # user .filter pois o .get não possui o método exists
+
+       
+       
+
+        return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
+    def post(self, request,id_comunidade, *args, **kwargs): # nem tudo aqui é
+        if kwargs:
+            carregar = kwargs.get('carregar', 'nada')
             if kwargs.get('modificar_seguidor') != None:
                 user = request.user
                 c = Comunidade.objects.get(id=id_comunidade)
@@ -36,6 +52,7 @@ class ComunidadeView(LoginRequiredMixin,View):
         dados = pega_dados_comunidade(carregar, id_comunidade)
         
         comunidade = Comunidade.objects.get(id=int(id_comunidade))
+        comunidade.posts= Post.objects.filter(id=int(id_comunidade))
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
@@ -50,10 +67,14 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
     def post(self, request,id_comunidade, carregar,  *args,**kwargs):
         if carregar == 'materiais':
             titulo = request.POST.get('titulo')
-            material = request.POST.get('material')
+            material = request.FILES.get('material')
             descricao = request.POST.get('descricao')
-            material = material.replace(' ', '_')
-            nome, ext = os.path.splitext(material)
+            aux = material.name
+            material.name = aux.replace(' ', '_')
+           
+            print(f'Valor da auxilair é {aux}')
+            nome, ext = os.path.splitext(aux)
+
             a = Arquivo(
                 usuario=request.user,
                 comunidade= Comunidade.objects.get(id=id_comunidade),

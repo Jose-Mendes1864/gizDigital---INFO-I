@@ -57,3 +57,15 @@ class Arquivo(models.Model):
     titulo = models.CharField(max_length=100)
     arquivo = models.FileField(upload_to='comunidade/arquivos')
     ext = models.CharField(max_length=10,blank=True, null=True )
+    def __str__(self):
+        return f'{self.usuario.username} - {self.titulo}'
+    
+class Reuniao(models.Model):
+    criador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    comunidade =models.ForeignKey(Comunidade, on_delete=models.CASCADE)
+    tematica = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=100, default=None)
+    url_da_reuniao = models.CharField(max_length=100)
+    data_hora = models.DateTimeField()
+    def __str__(self):
+        return f'{self.criador} - {self.data_hora} - {self.tematica}'

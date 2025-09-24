@@ -1,6 +1,6 @@
 from autenticacao.models import Usuario
 from django.shortcuts import HttpResponse
-from .models import Arquivo
+from .models import Arquivo,Reuniao
 
 
 def tiraCamelCase(texto):
@@ -17,7 +17,7 @@ def pega_dados_comunidade(carrega, id_comunidade):
     if carrega == 'posts':
         pass
     elif carrega == 'eventos':
-        pass
+        dados = Reuniao.objects.filter(comunidade_id=int(id_comunidade))
     elif carrega == 'materiais':
         dados = Arquivo.objects.filter(comunidade__id = int(id_comunidade))
 
