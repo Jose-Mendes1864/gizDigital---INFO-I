@@ -129,7 +129,6 @@
           <div class="titulo">{{material.titulo}}precisar mudar aqui</div>
 
           <div class="descricao">{{material.descricao}}</div>
-          <div class="etiquetas">{{material.ext}}EITQUETAS PRECISA MUDAR O CSS</div>
          
           <a href="{{material.arquivo.url}}"    class="link-material btn-{{material.ext}}">
           📄 Vizualizar {{materia.ext}}
@@ -199,12 +198,17 @@
     <div class="container">
     
       {% for e in dados %}
+        
       <section class="eventos">
         <div class="evento-card">
           <h3>{{e.tematica}}</h3>
-          {% if e != None %}
-          <div class="descricao">{{e.descricao}}</div>
+          <div class="descricao">
+          {% if e.descricao  %}
+          {{e.descricao}}
+          {% else %}
+          Sem descrição
           {% endif %}
+        </div>
           <div class="link-meet"><a href="{% if e.url|slice:':4' != 'http' %}https://{{ e.url }}{% else %}{{ e.url }}{% endif %}" target="_blank">{{e.url_da_reuniao}}</a></div>
           <div class="info">
             <span class="data">{{ e.data_hora|date:"d \d\e F \d\e Y" }}</span>
@@ -218,17 +222,28 @@
       <button class="add-btn"><i class="fas fa-plus"></i></button>
 
       <div class="popup evento">
+      <form action="{% url 'enviar_comunidade' comunidade.id carregar %}" method="POST" enctype="multipart/form-data">
+       
+        {% csrf_token %}
+
         <h2>Criar reunião</h2>
-        <input type="text" name="titulo" placeholder="Título da reunião" />
-        <textarea name="descricao" placeholder="Descrição da reunião"></textarea>
-        <input name="url_da_reuniao" type="text" placeholder="Link do Google Meet" />
+        {% for message in messages%} 
+        <div class="{{ message.tags}}" role="alert">{{message}}</div>
+        {% endfor %}
+        <input type="text" name="titulo" required placeholder="Título da reunião" />
+<br>
+<textarea name="descricao" placeholder="Descrição da reunião"></textarea>
+
+<br>
+        <input name="url_da_reuniao" required type="text" placeholder="Link do Google Meet" />
         <div class="inline-fields">
-          <input name="data" type="date" />
-          <input name="hora" type="time" />
+          <input name="data" type="date" required/>
+          <input name="hora" type="time" required/>
         </div>
         <button class="submit-btn">Criar</button>
       </div>
     </div>
+  </form>
     {%endif%}
   </main>
 

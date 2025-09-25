@@ -3,9 +3,10 @@ from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,MaterialUsuarios
-from .models import Comunidade, Arquivo,Post
+from .models import Comunidade, Arquivo,Post,Reuniao
 from .functions import tiraCamelCase, pega_dados_comunidade
 import os
+from datetime import datetime
 # Create your views here.
 
 class IndexComunidadeView(LoginRequiredMixin,View):
@@ -56,7 +57,7 @@ class ComunidadeView(LoginRequiredMixin,View):
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
-       
+        print(dados[0].data_hora)
        
 
         return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
@@ -84,7 +85,28 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
                 ext = ext
             )
             a.save()
-            return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
+        elif carregar == 'eventos':
+            titulo = request.POST.get('titulo')
+            descricao = request.POST.get('descricao')
+            url_da_reuniao = request.POST.get('url_da_reuniao')
+            data = request.POST.get('data')
+            hora = request.POST.get('hora')
+            comunidade= Comunidade.objects.get(id=id_comunidade)
+            user = request.user
+            if data and hora:
+                data_str = f"{data} {hora}"
+                data_obj = datetime.strptime(data_str, "%Y-%m-%d %H:%M")
+            evento = Reuniao(
+                criador=user,
+                comunidade=comunidade,
+                tematica=titulo,
+                descricao=descricao,
+                url_da_reuniao=url_da_reuniao,
+                data_hora=data_obj
+            )
+            evento.save()
+
+        return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
         
         return HttpResponse('oi')
 
