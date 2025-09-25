@@ -52,3 +52,5 @@ class PerguntaUsuario(models.Model):
 class MaterialUsuarios(models.Model):
     opcao = models.ForeignKey(Opcao, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    def __str__(self) -> str:
+        return f'{self.opcao} - {self.usuario}'

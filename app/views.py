@@ -4,9 +4,12 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,MaterialUsuarios
 from .models import Comunidade, Arquivo,Post,Reuniao
+from autenticacao.models import Opcao,PerguntaDoQuestionario
 from .functions import tiraCamelCase, pega_dados_comunidade
 import os
 from datetime import datetime
+from django.contrib import messages
+from django.contrib.messages import constants
 # Create your views here.
 
 class IndexComunidadeView(LoginRequiredMixin,View):
@@ -96,7 +99,8 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
             if data and hora:
                 data_str = f"{data} {hora}"
                 data_obj = datetime.strptime(data_str, "%Y-%m-%d %H:%M")
-            evento = Reuniao(
+            if "https://meet.google.com/" in url_da_reuniao:
+                evento = Reuniao(
                 criador=user,
                 comunidade=comunidade,
                 tematica=titulo,
@@ -104,10 +108,11 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
                 url_da_reuniao=url_da_reuniao,
                 data_hora=data_obj
             )
-            evento.save()
-
+                evento.save()
+            else:
+                messages.add_message(request, constants.ERROR, "O lino fornecido é inválido" )
         return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
-        
+            
         return HttpResponse('oi')
 
         
@@ -123,6 +128,7 @@ class PerfilEditView(LoginRequiredMixin,View):
      
     def get(self, request, *args, **kwargs):
         dados_usuario = {}
+
         try:
             
             for i in PerguntaDoQuestionario.objects.filter(aparecer_no_perfil=True):
@@ -145,7 +151,7 @@ class PerfilEditView(LoginRequiredMixin,View):
         for o in objects_materiais:
             lista_material.append(o.opcao)
 
-        dados_usuario['materiais'] = lista_material
+        dados_usuario['Material'] = lista_material
         print(dados_usuario)
         print(dados_usuario)
         chaves_ordenadas = ['Biografia','Nome completo', 'Nome de usuario', 'Idade','Email', 'Area do saber', 'Anos experiencia',  'Material','Notificacoes', 'date_joined']
@@ -154,10 +160,13 @@ class PerfilEditView(LoginRequiredMixin,View):
         try:
             for i in chaves_ordenadas:
                 dados_usuario_ordenado[i] = dados_usuario[i]
+        
         except Exception as e:
             print(f'Erro pois algum dado ali de chaves ordenadas não existe mais ou foi modificada erro: {e}')
-        return render(request, self.template_name, {'user': request.user, 'dados_usuario': dados_usuario_ordenado}) 
-    
+        materiais = Opcao.objects.filter(pergunta=PerguntaDoQuestionario.objects.get(titulo_pergunta='material'))
+        return render(request, self.template_name, {'user': request.user, 'materiais':materiais, 'dados_usuario': dados_usuario_ordenado}) 
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('Em processo')
 class VerPerfilView(LoginRequiredMixin, View):
     def get(self, request, id,*args, **kwargs):
         return HttpResponse(f'Ver pefil {id}')

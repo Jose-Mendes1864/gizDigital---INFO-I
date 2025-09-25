@@ -38,7 +38,7 @@ header .save {
   font-size: 1rem;
   color: #333;
   cursor: pointer;
-  width: 50px;
+  width: 60px;
 }
 
 .profile-section {
@@ -115,4 +115,7 @@ textarea {
   width: 100%;
   min-height: 120px;
   resize: vertical;
+}
+#selecionarFoto{
+  background-color: rgb(149, 149, 206);
 }
