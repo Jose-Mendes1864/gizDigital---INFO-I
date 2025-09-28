@@ -18,14 +18,14 @@ def caminho_imagem(instance, filename):
         extensao = filename.split('.')[-1]
         
         # Garante um nome de arquivo seguro
-        nome_formatado = instance.username.replace(' ', '_').lower() + '_Photo'
+        nome_formatado = f'foto_usuario_{instance.username.replace(' ', '_').lower() + '_Photo'}'
         caminho = instance.pasta_destino
 
         # Cria o novo nome do arquivo
         novo_nome = f'{nome_formatado}_{secrets.token_hex(4)}.{extensao}' 
 
         # Retorna o caminho relativo
-        print(os.path.join(caminho, novo_nome))
+
         return os.path.join(caminho, novo_nome)
     
     except Exception as e:

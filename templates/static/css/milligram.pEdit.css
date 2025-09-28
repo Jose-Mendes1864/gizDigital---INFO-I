@@ -119,3 +119,10 @@ textarea {
 #selecionarFoto{
   background-color: rgb(149, 149, 206);
 }
+.dive{
+   display: grid;
+  grid-template-columns: auto 1fr; /* coluna para o checkbox e outra para o texto */
+  column-gap: 8px; /* espaço entre checkbox e texto */
+  row-gap: 6px;    /* espaço entre linhas */
+  align-items: center
+}

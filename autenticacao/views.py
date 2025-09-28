@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib import auth
 
-from .models import  Usuario,PerguntaDoQuestionario,Opcao,MaterialUsuarios, PerguntaUsuario
+from .models import  Usuario,PerguntaDoQuestionario,Opcao,PergutasCheckBox, PerguntaUsuario,Input
 from .functions import enviar_email_async
 import secrets
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -183,19 +183,17 @@ class Questionario(LoginRequiredMixin,View):
             
 
         user = request.user
-        print(dados)
+        
         for key, value in dados.items():
             value = value[0].strip()
-            
-            if key == 'material':
-         
-                material = dados['material']
-                print(material)
-                for m in material:
-                    material_selecionado = Opcao.objects.get(nome=m)
-                    print(f'Valor de m {material_selecionado}')
-                    m = MaterialUsuarios(
-                        opcao = material_selecionado,
+            print('entrou aqui')
+            if PerguntaDoQuestionario.objects.filter(tipo_input=Input.objects.get(nome='checkbox'), titulo_pergunta=key) :
+              
+                dados_check = dados[key]
+                for dado in dados_check:
+                    dado_selecionado = Opcao.objects.get(nome=dado)
+                    m = PergutasCheckBox(
+                        opcao = dado_selecionado,
                         usuario=user
                     )
                     m.save()

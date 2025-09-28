@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .enums import *
+from django.core.files.base import ContentFile
+
 from .functions import  caminho_imagem
+
 # Create your models here.
 
 class Usuario(AbstractUser):
@@ -20,6 +23,15 @@ class Usuario(AbstractUser):
 
     USERNAME_FIELD = 'email'  # define email comocampo para o auth.authenticate, memso asism é nessecssário username=email
     REQUIRED_FIELDS = ['username'] # são campo obrigatório ao criar o superusuario deixamos em branco porque um deles é o email mas já ta unique e é o username_field ali ent não precisa
+    def save(self, *args, **kwargs):
+        try:
+            # pegar objeto antigo do banco
+            antigo = Usuario.objects.get(pk=self.pk)
+            if antigo.foto and antigo.foto != self.foto and antigo.foto.name != 'usuario/foto/defaultFotoPerfil.jpg':
+                antigo.foto.delete(save=False)  # deleta o arquivo antigo
+        except Usuario.DoesNotExist:
+            pass
+        super().save(*args, **kwargs)
 
 class Input(models.Model):
     nome  = models.CharField(max_length=30)
@@ -47,10 +59,11 @@ class PerguntaUsuario(models.Model):
     pergunta = models.ForeignKey(PerguntaDoQuestionario, on_delete=models.CASCADE)
     resposta = models.CharField(max_length=500)
     def __str__(self):
-        return f'{self.user} - {self.pergunta.titulo_pergunta}'
+        return f'{self.user} - {self.pergunta.titulo_pergunta} - {self.resposta}'
     
-class MaterialUsuarios(models.Model):
+class PergutasCheckBox(models.Model):
     opcao = models.ForeignKey(Opcao, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     def __str__(self) -> str:
-        return f'{self.opcao} - {self.usuario}'
+        return f'{str(self.opcao.pergunta).capitalize()}: {self.opcao} - {self.usuario.username}'
+    
