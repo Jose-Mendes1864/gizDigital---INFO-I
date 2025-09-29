@@ -18,7 +18,7 @@ def caminho_imagem(instance, filename):
         extensao = filename.split('.')[-1]
         
         # Garante um nome de arquivo seguro
-        nome_formatado = f'foto_usuario_{instance.username.replace(' ', '_').lower() + '_Photo'}'
+        nome_formatado = f"foto_usuario_{instance.username.replace(' ', '_').lower() + '_Photo'}"
         caminho = instance.pasta_destino
 
         # Cria o novo nome do arquivo
