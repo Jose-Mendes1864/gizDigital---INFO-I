@@ -10,7 +10,9 @@ import os
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.messages import constants
-
+from django.contrib.auth.hashers import check_password
+from django.urls import reverse
+from django.contrib import auth
 # Create your views here.
 
 class IndexComunidadeView(LoginRequiredMixin,View):
@@ -128,7 +130,7 @@ class PerfilEditView(LoginRequiredMixin,View):
      
     def get(self, request, *args, **kwargs):
         dados_usuario = {}
-
+        redefine_senha_status = request.GET.get('redefine_senha_status', None)# to passando essa variavel lá no refinir senha para ver se a senha digitada pel ousuario é a antiga mesmo
         try:
             
             for i in PerguntaDoQuestionario.objects.filter(aparecer_no_perfil=True):
@@ -168,7 +170,7 @@ class PerfilEditView(LoginRequiredMixin,View):
         dados_com_select = get_dados_input('select')
         dados_com_checkbox = get_dados_input('checkbox')
     
-        return render(request, self.template_name, {'user': request.user, 'dados_com_select':dados_com_select,  'dados_com_checkbox': dados_com_checkbox,'dados_usuario': dados_usuario_ordenado}) 
+        return render(request, self.template_name, {'user': request.user, 'dados_com_select':dados_com_select,  'dados_com_checkbox': dados_com_checkbox,'dados_usuario': dados_usuario_ordenado, 'redefine_senha_status':redefine_senha_status}) 
     def post(self, request, *args, **kwargs):
         return HttpResponse('Em processo')
 class VerPerfilView(LoginRequiredMixin, View):
@@ -252,3 +254,27 @@ class ModificarPerfilView(LoginRequiredMixin, View):
         return redirect('perfil')
        
         return HttpResponse(dados)
+
+class RedefineSenhaView(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        pass
+    def post(self, request, *args, **kwargs):
+        senha_atual = request.POST.get('senha_atual', None)
+        if senha_atual: #  pra ver se a senha atual foi digitada  coretamente
+            if check_password(senha_atual,request.user.password):
+                url = reverse('perfil')
+                return redirect(f'{url}?redefine_senha_status=True')
+            else:   
+                messages.add_message(request, constants.ERROR, 'Senha incorreta')
+                return redirect('perfil')
+    
+        else: # ai já ta no redefinir senha, pois a senha atual já foi acertada
+            senha  =request.POST.get('senha')
+            user = request.user
+            user.set_password(senha)
+            user.save()
+            # Mantém o usuário logado após mudar a senha
+            auth.update_session_auth_hash(request, user)
+
+            messages.add_message(request, constants.SUCCESS, "Senha redefinida com sucesso")
+            return redirect('Perfil')

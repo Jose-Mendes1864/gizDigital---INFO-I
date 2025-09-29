@@ -7,41 +7,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Editar Perfil</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
   <link rel="stylesheet" href="{% static 'css/milligram.pEdit.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 
 <body>
-  <form  action="{% url 'modify_profile' request.user.id %}" class="form-section" method="POST" enctype="multipart/form-data">
-  
-      {% csrf_token %}
+  <form action="{% url 'modify_profile' %}" class="form-section" method="POST" enctype="multipart/form-data">
 
-  <div class="container" >
-    <header>
-      <button type="button" class="back" >
-        <a href="{% url 'indexComunidade' %}" class="back">
-    <i class="fas fa-arrow-left"></i>
-    </a>
-      </button>
-      <h1>Editar perfil</h1>
-      <input type="submit" class="save" value="Salvar"> 
-    </header>
+    {% csrf_token %}
 
-    
+    <div class="container">
+      <header>
+        <button type="button" class="back">
+          <a href="{% url 'indexComunidade' %}" class="back">
+            <i class="fas fa-arrow-left"></i>
+          </a>
+        </button>
+        <h1>Editar perfil</h1>
+        <input type="submit" class="save" value="Salvar">
+      </header>
+
+
 
 
       <!-- Perfil + estrelas -->
       <div class="profile-section">
         <label for="fotoDePerfil">
-          <img id="previewFoto" 
-               src="{% if user.foto %}{{ user.foto.url }}{% else %}{% static 'img/defaultFotoPerfil.jpg' %}{% endif %}" 
-               alt="Perfil" class="profile-pic" />
-      </label>
+          <img id="previewFoto"
+            src="{% if user.foto %}{{ user.foto.url }}{% else %}{% static 'img/defaultFotoPerfil.jpg' %}{% endif %}"
+            alt="Perfil" class="profile-pic" />
+        </label>
         <div id="selecionarFoto">
           <label style="cursor: pointer;" for="fotoDePerfil">Selecionar foto</label>
-          <input type="file" name="foto"  id="fotoDePerfil" style="display: none;"/>
+          <input type="file" name="foto" id="fotoDePerfil" style="display: none;" />
         </div>
         <div class="stars">
           <i class="fas fa-star estrela"></i>
@@ -51,17 +52,20 @@
           <i class="fas fa-star estrela"></i>
         </div>
       </div>
-    
+
       <!-- Linha com inputs e biografia -->
-        <div class="message" style="text-align: center;">
-        {% if messages%}
-          {% for message in messages%} 
-          <div class="{{ message.tags}}" role="alert">{{message}}</div>
-          {% endfor %}
-        {% endif %}
-      </div>
+<div class="message" style="text-align: center;">
+  {% if messages %}
+      {% for message in messages %}
+          {% if "senha" in message.message|lower %}
+              <div class="{{ message.tags}}" role="alert">{{ message }}</div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
+</div>
+
       <div class="form-row">
-        
+
         <!-- Biografia
         <div class="form-group">
           <label for="">Biografia:</label>
@@ -70,104 +74,181 @@
 
         <!-- Outros campos -->
         {% for key,value in dados_usuario.items %}
-          {% if key != 'date_joined' and key != 'Biografia'  and key not in dados_com_select  and key not in  dados_com_checkbox%}
-          <div class="form-group">
-            <label for="{{key}}">{{key}}</label>
-            <input type="text" value="{{value}}" name="{{key}}" id="{{key}}">
-          </div>
-
-         
-         
-          {% endif %}
-        {% endfor %}
-    
-        <!--PARTE DOS SELECT AQUI -->
- <div class="form-group">
-  {% for  key,value in dados_com_select.items %}
-          <label>{{key}}</label>
-         
-          <select name="{{key}}" id="">
-          
-          {% for j in  value %}
-          
-            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}</option>
-            
-          {%endfor%}
-          </select>
-        
+        {% if key != 'date_joined' and key != 'Biografia' and key not in dados_com_select and key not in dados_com_checkbox%}
+        <div class="form-group">
+          <label for="{{key}}">{{key}}</label>
+          <input type="text" value="{{value}}" name="{{key}}" id="{{key}}">
         </div>
-      {%endfor%}
 
-    <!-- AQUI TERMINAR AS PERTES DOS SELECTS -->
 
-  <!-- aqui começa a parte dos checkbox -->
-   
-        
-       {% for key,value in  dados_com_checkbox.items %}
+
+        {% endif %}
+        {% endfor %}
+
+        <!--PARTE DOS SELECT AQUI -->
+        <div class="form-group">
+          {% for key,value in dados_com_select.items %}
+          <label>{{key}}</label>
+
+          <select name="{{key}}" id="">
+
+            {% for j in value %}
+
+            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}
+            </option>
+
+            {%endfor%}
+          </select>
+
+        </div>
+        {%endfor%}
+
+        <!-- AQUI TERMINAR AS PERTES DOS SELECTS -->
+
+        <!-- aqui começa a parte dos checkbox -->
+
+
+        {% for key,value in dados_com_checkbox.items %}
         <div class="form-group">
           <label>{{key}}</label>
           <div class="dive checkbox" id="{{key}}">
-          {% for i in  value %}
-        
-          
-               <input  type="checkbox" id="{{i}}" name="{{key}}" value="{{i}}" {%if i|stringformat:"s"  in  dados_usuario|dict_get:key %} checked {%endif %}>
-            <label for="{{i}}">{{i}}</label>
-       
-          
-          
+            {% for i in value %}
 
-          {%endfor%}
+
+            <input type="checkbox" id="{{i}}" name="{{key}}" value="{{i}}" {%if i|stringformat:"s" in dados_usuario|dict_get:key %} checked {%endif%}>
+            <label for="{{i}}">{{i}}</label>
+
+
+
+
+            {%endfor%}
           </div>
         </div>
-      {%endfor%}
+        {%endfor%}
         <div class="form-group">
           <label>Primeiro login</label>
           <input type="text" value='{{dados_usuario.date_joined|date:"d/m/y"}}' disabled />
         </div>
 
-         <!-- Biografia -->
-         <div class="form-group-bio">
+        <!-- Biografia -->
+        <div class="form-group-bio">
           <label for="biografia">Biografia:</label>
           <textarea name="biografia" id="biografia">{{dados_usuario.Biografia}}</textarea>
         </div>
-    
+
       </div>
+
+  </form>
+
+  <div style="margin-top: 25px;" id="btn_redefinir_senha" class="btn bg-danger" onclick="formSenhaVisivel()">
+    Redefinir senha</div>
+
+  
+       {% if redefine_senha_status %}
+       <script>
+        formSenhaVisivel()
+       </script>
+
+   {%endif%} 
+
+  <form id="formularioRedefinirSenha" action="{% url 'redefine_senha'%}" method="POST" style="display: none;">
+    {% csrf_token %}
+    <div class="message" style="text-align: center;">
+  {% if messages %}
+      {% for message in messages %}
+          {% if "senha" in message.message|lower %}
+              <div class="{{ message.tags}}" role="alert" style="margin:  10px auto  10px auto; width: 50%;">{{ message }}</div>
+          {% endif %}
+      {% endfor %}
+  {% endif %}
+        <div class="bg-danger btn message_senha" role="alert" style="margin:  10px auto  10px auto; width: 50%;display: none;"></div>
+
+</div>
+
+    {% if redefine_senha_status %}
+
+    <div> <label for="password">Insira a senha nova:</label>
+      <input name="senha" class="senha" type="password">
+    </div>
+    <div> <label for="password">Insira novamente:</label>
+      <input class="senhaAgain"  type="password">
+       <input type="submit" value="Redefinir">
+    </div>
     
-    </form>
+ 
+    {%else%}
     
-    <h1>REDEFNINIR SENHA</h1>
-    
+    <div>
+      <label for="password">Insira sua senha atual:</label>
+      <input type="password" name="senha_atual">
+      <input type="submit" value="enviar">
+
+    </div>
+    {%endif%}
+
+
+  </form>
+  <form action="">
+
+  </form>
+
   </div>
 
+
   <script src="{% static 'js/perfil.js'%}">
-    
+
   </script>
   <script>
-    window.addEventListener('load', function() {
-        // Passando o valor do servidor
-    let estrelas =  document.querySelectorAll('.estrela')
-    let pontuacao = '{{user.pontuacao}}'
-    pontuacao = parseInt(pontuacao)
-    for(let i = 0; i < pontuacao; i++ ){
-      estrelas[i].classList.add('pintada')
-    }
+    function formSenhaVisivel(){
+    
+      let formularioRedefinirSenha = document.getElementById('formularioRedefinirSenha')
+      formularioRedefinirSenha.style.display = 'Block'
+      let btn_redefinir_senha = document.getElementById('btn_redefinir_senha')
+      btn_redefinir_senha.style.opacity = 0
+    }  
+    window.addEventListener('load', function () {
+      
+      // Passando o valor do servidor
+      let estrelas = document.querySelectorAll('.estrela')
+      let pontuacao = '{{user.pontuacao}}'
+      pontuacao = parseInt(pontuacao)
+      for (let i = 0; i < pontuacao; i++) {
+        estrelas[i].classList.add('pintada')
+      }
       // Seleciona todos os inputs e textareas dentro do formulário
-    let elementos = [
+      let elementos = [
         ...document.querySelectorAll('.form-section input'),
         ...document.querySelectorAll('.form-section textarea')
-    ];
+      ];
 
-    elementos.forEach(el => {
+      elementos.forEach(el => {
         // Substitui espaços por underscore no name e id
         let novoNome = el.name.replace(/\s+/g, '_');
         el.name = novoNome.toLowerCase();
 
         if (el.id) {
-            el.id = el.id.replace(/\s+/g, '_');
+          el.id = el.id.replace(/\s+/g, '_');
         }
+      });
+function validaLogin(event){
+   
+  
+    let senha = document.querySelector('.senha').value.trim();
+    let confSenha = document.querySelector('.senhaAgain').value.trim();
+    if (senha != confSenha){
+        event.preventDefault()
+        let message = document.querySelector('.message_senha')
+        message.style.display = 'Block'
+        message.innerHTML = 'As senhas não conincidem';
+        document.getElementById('form-senha-nova').reset()
+        senha.focus()
+    }
+  
+}
+let form2 = document.getElementById('formularioRedefinirSenha')
+form2.addEventListener('submit', validaLogin)
+
     });
-    
-});
   </script>
 </body>
 

@@ -35,6 +35,7 @@ inputsForms = inputsForms.concat(select);
 
       })
 }
+
 function validaCheckBox(checkbox){
  
 
@@ -72,5 +73,5 @@ function validaCheckBox(checkbox){
 
 
 let form = document.querySelector('.form-section')
-
 form.addEventListener('submit',ValidaForm)
+  

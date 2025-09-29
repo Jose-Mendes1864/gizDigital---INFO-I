@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from  django.shortcuts import redirect
-from .views import  IndexComunidadeView, ComunidadeView, PerfilEditView,EnviarComunidadeView,VerPerfilView,ModificarPerfilView
+from .views import  IndexComunidadeView, ComunidadeView, PerfilEditView,EnviarComunidadeView,VerPerfilView,ModificarPerfilView,RedefineSenhaView
 urlpatterns = [
     path('', IndexComunidadeView.as_view(), name='indexComunidade'),
     path('comunidade/<int:id_comunidade>/', ComunidadeView.as_view(), name='comunidade'),
@@ -26,8 +26,10 @@ urlpatterns = [
 
     path('comunidade/<int:id_comunidade>/<str:carregar>/<str:modificar_seguidor>', ComunidadeView.as_view(), name='modifica_joined'),
     path('perfil/', PerfilEditView.as_view(), name='perfil'),
+    path('perfil/reset_password', RedefineSenhaView.as_view(), name='redefine_senha') ,
+
     path('perfil/ver_perfil/<int:id>', VerPerfilView.as_view(), name='view_profile' ),
-     path('perfil/ver_perfil/<int:id>/modificar_perfil', ModificarPerfilView.as_view(), name='modify_profile' )
-   
+    path('perfil/modificar_perfil', ModificarPerfilView.as_view(), name='modify_profile' )
+
     
 ]
