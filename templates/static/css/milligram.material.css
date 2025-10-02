@@ -45,7 +45,7 @@ body {
 .materiais {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
 }
 
 .card {
@@ -69,6 +69,7 @@ body {
   border-radius: 8px;
   margin-bottom: 8px;
   font-size: 0.9rem;
+  margin: 15px;
 }
 
 /* Botão flutuante */
