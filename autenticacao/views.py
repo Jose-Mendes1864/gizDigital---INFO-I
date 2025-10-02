@@ -34,6 +34,8 @@ class LoginView(View):
             # combina a pesquisa + o request .user
          
             return redirect('indexComunidade')
+
+
         return render(request, 'login.html')
     def post(self,request, *args, **kwargs):
         if request.user.is_authenticated:

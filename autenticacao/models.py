@@ -18,7 +18,7 @@ class Usuario(AbstractUser):
    
     pasta_destino = models.CharField(max_length=100, default='usuario/foto', editable=False)
     foto = models.FileField(upload_to=caminho_imagem, default='usuario/foto/defaultFotoPerfil.jpg')
-    pontuacao =models.FloatField(default=3, null=True, blank=True)
+    pontuacao =models.FloatField(default=2, null=True, blank=True)
     #  data criação já possui
 
     USERNAME_FIELD = 'email'  # define email comocampo para o auth.authenticate, memso asism é nessecssário username=email

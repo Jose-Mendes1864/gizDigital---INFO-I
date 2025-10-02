@@ -15,6 +15,7 @@
 </head>
 
 <body>
+  {{request.user.email}}
   <form action="{% url 'modify_profile' %}" class="form-section" method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
@@ -57,12 +58,13 @@
 <div class="message" style="text-align: center;">
   {% if messages %}
       {% for message in messages %}
-          {% if "senha" in message.message|lower %}
+     
               <div class="{{ message.tags}}" role="alert">{{ message }}</div>
-          {% endif %}
+        
       {% endfor %}
   {% endif %}
 </div>
+
 
       <div class="form-row">
 
@@ -74,36 +76,16 @@
 
         <!-- Outros campos -->
         {% for key,value in dados_usuario.items %}
-        {% if key != 'date_joined' and key != 'Biografia' and key not in dados_com_select and key not in dados_com_checkbox%}
+        {% if key != 'date_joined' and key != 'Biografia'  and key not in dados_com_select and key not in dados_com_checkbox%}
         <div class="form-group">
           <label for="{{key}}">{{key}}</label>
           <input type="text" value="{{value}}" name="{{key}}" id="{{key}}">
         </div>
 
-
-
         {% endif %}
         {% endfor %}
 
-        <!--PARTE DOS SELECT AQUI -->
-        <div class="form-group">
-          {% for key,value in dados_com_select.items %}
-          <label>{{key}}</label>
-
-          <select name="{{key}}" id="">
-
-            {% for j in value %}
-
-            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}
-            </option>
-
-            {%endfor%}
-          </select>
-
-        </div>
-        {%endfor%}
-
-        <!-- AQUI TERMINAR AS PERTES DOS SELECTS -->
+      
 
         <!-- aqui começa a parte dos checkbox -->
 
@@ -125,6 +107,25 @@
           </div>
         </div>
         {%endfor%}
+        <!--PARTE DOS SELECT AQUI -->
+        <div class="form-group">
+          {% for key,value in dados_com_select.items %}
+          <label>{{key}}</label>
+
+          <select name="{{key}}" id="">
+
+            {% for j in value %}
+
+            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}
+            </option>
+
+            {%endfor%}
+          </select>
+
+        </div>
+        {%endfor%}
+
+        <!-- AQUI TERMINAR AS PERTES DOS SELECTS -->
         <div class="form-group">
           <label>Primeiro login</label>
           <input type="text" value='{{dados_usuario.date_joined|date:"d/m/y"}}' disabled />
@@ -140,45 +141,41 @@
 
   </form>
 
-  <div style="margin-top: 25px;" id="btn_redefinir_senha" class="btn bg-danger" onclick="formSenhaVisivel()">
-    Redefinir senha</div>
 
-  
-       {% if redefine_senha_status %}
-       <script>
-        formSenhaVisivel()
-       </script>
+
+   
+  {% if not redefine_senha_status %}
+      <div style="margin-top: 25px;" id="btn_redefinir_senha" class="btn bg-danger" onclick="formSenhaVisivel()">
+        Redefinir senha
+    </div>
 
    {%endif%} 
 
-  <form id="formularioRedefinirSenha" action="{% url 'redefine_senha'%}" method="POST" style="display: none;">
+  <form id="formularioRedefinirSenha" action="{% url 'redefine_senha'%}" method="POST" >
     {% csrf_token %}
-    <div class="message" style="text-align: center;">
-  {% if messages %}
-      {% for message in messages %}
-          {% if "senha" in message.message|lower %}
-              <div class="{{ message.tags}}" role="alert" style="margin:  10px auto  10px auto; width: 50%;">{{ message }}</div>
-          {% endif %}
-      {% endfor %}
-  {% endif %}
-        <div class="bg-danger btn message_senha" role="alert" style="margin:  10px auto  10px auto; width: 50%;display: none;"></div>
+    
+ 
 
-</div>
+
 
     {% if redefine_senha_status %}
-
-    <div> <label for="password">Insira a senha nova:</label>
+  
+   
+   <div>
+    <h1>Redefinir</h1>
+     <div  style="margin-top: 10px;"> <label for="password">Insira a senha nova:</label>
       <input name="senha" class="senha" type="password">
     </div>
-    <div> <label for="password">Insira novamente:</label>
+    <div style="margin-top: 10px;"> <label for="password">Insira novamente:</label>
       <input class="senhaAgain"  type="password">
        <input type="submit" value="Redefinir">
     </div>
     
+   </div>
  
     {%else%}
-    
-    <div>
+   
+    <div  class="senha_atual" id="senha_atual" style="display: none;">
       <label for="password">Insira sua senha atual:</label>
       <input type="password" name="senha_atual">
       <input type="submit" value="enviar">
@@ -188,9 +185,7 @@
 
 
   </form>
-  <form action="">
 
-  </form>
 
   </div>
 
@@ -200,8 +195,8 @@
   </script>
   <script>
     function formSenhaVisivel(){
-    
-      let formularioRedefinirSenha = document.getElementById('formularioRedefinirSenha')
+      
+      let formularioRedefinirSenha = document.getElementById('senha_atual')
       formularioRedefinirSenha.style.display = 'Block'
       let btn_redefinir_senha = document.getElementById('btn_redefinir_senha')
       btn_redefinir_senha.style.opacity = 0

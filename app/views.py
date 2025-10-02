@@ -113,6 +113,9 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
                 evento.save()
             else:
                 messages.add_message(request, constants.ERROR, "O lino fornecido é inválido" )
+        elif carregar == 'posts':
+            pass
+            # estrela() para que atualize
         return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
             
         return HttpResponse('oi')
@@ -145,6 +148,7 @@ class PerfilEditView(LoginRequiredMixin,View):
                     for i in repostas_objects:
                         lista.append(i.resposta)
                     dados_usuario[indice] = lista
+                    print(f'Valor de dados {dados_usuario}')
                     
         except Exception as e:
             dados_usuario['i'] = 'Valor indefinido'
@@ -158,13 +162,14 @@ class PerfilEditView(LoginRequiredMixin,View):
         perguntas_com_check_box = PerguntaDoQuestionario.objects.filter(tipo_input__nome='checkbox')
         dados_usuario = adiciona_objetos_com_checkbox(request,perguntas_com_check_box,dados_usuario)
     
-        chaves_ordenadas = ['Biografia','Nome completo', 'Nome de usuario', 'Idade','Email', 'Area do saber', 'Anos de experiencia',  'Material','Notificacoes', 'Para quem leciona','date_joined']
+        chaves_ordenadas = ['Biografia','Nome completo', 'Nome de usuario', 'Email', 'Area do saber', 'Anos de experiencia',  'Material','Notificacoes', 'Para quem leciona','date_joined']
         dados_usuario_ordenado = {}
-        
+        print(f'Valor de dados usuario: {dados_usuario}')
         try:
            for i in chaves_ordenadas:
-            dados_usuario_ordenado[i] = dados_usuario[i]
-        
+          
+                dados_usuario_ordenado[i] = dados_usuario[i]
+           
         except Exception as e:
             print(f'Erro pois algum dado ali de chaves ordenadas não existe mais ou foi modificada erro: {e}')
         dados_com_select = get_dados_input('select')
@@ -179,9 +184,9 @@ class VerPerfilView(LoginRequiredMixin, View):
     def post(self, request, id,*args, **kwargs):
         pass
 class ModificarPerfilView(LoginRequiredMixin, View):
-    def get(self, request, id,*args, **kwargs):
+    def get(self, request, *args, **kwargs):
        pass
-    def post(self, request, id,*args, **kwargs):
+    def post(self, request, *args, **kwargs):
         dados = dict(request.POST.copy())
         # como checkbox se seleiconar nada não vem nada preciso passar pelas perguntas com checkbox a parte
         dados_sem_csrf = {}
@@ -270,11 +275,14 @@ class RedefineSenhaView(LoginRequiredMixin,View):
     
         else: # ai já ta no redefinir senha, pois a senha atual já foi acertada
             senha  =request.POST.get('senha')
-            user = request.user
-            user.set_password(senha)
-            user.save()
-            # Mantém o usuário logado após mudar a senha
-            auth.update_session_auth_hash(request, user)
+            if len(senha.strip()) < 4:
+                messages.add_message(request, constants.WARNING, "Por favor insira uma senha mais segura")
+            else:
+                user = request.user
+                user.set_password(senha)
+                user.save()
+                # Mantém o usuário logado após mudar a senha
+                auth.update_session_auth_hash(request, user)
 
-            messages.add_message(request, constants.SUCCESS, "Senha redefinida com sucesso")
-            return redirect('Perfil')
+                messages.add_message(request, constants.SUCCESS, "Senha redefinida com sucesso")
+            return redirect('perfil')

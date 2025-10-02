@@ -21,7 +21,7 @@
             {% csrf_token %}
             {% for pergunta in perguntas %}
 
-            {% if pergunta.tipo_input|lower|cut:" " == "text" %}
+            {% if pergunta.tipo_input|lower|cut:" " == "text" or pergunta.tipo_input|lower|cut:" " == "date" %}
             <div class="perguntaContainer">
                 <h2 id="pergunta">{{pergunta.texto_pergunta}}</h2>
                 <input name="{{pergunta.titulo_pergunta}}" type="{{pergunta.tipo_input}}"
