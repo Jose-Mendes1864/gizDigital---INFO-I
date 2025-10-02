@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{% static 'css/milligram.evento.css' %}" />
   <link rel="stylesheet" href="{% static 'css/milligram.submeter.css' %}" />
   <link rel="stylesheet" href="{% static 'css/milligram.material.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/milligram.post.css' %}">
 
 
 
@@ -66,6 +67,38 @@
 
     {% if carregar == 'posts' %}
 
+    <div class="post">
+      <div class="post-topo">
+        <img src="foto_perfil.jpg" alt="foto perfil" class="foto-perfil">
+        <span class="nome-perfil">nomeperfil</span>
+      </div>
+    
+      <div class="post-conteudo">
+        conteúdo da postagem
+      </div>
+    
+      <div class="post-acoes">
+        <button class="btn-like">Like</button>
+        <button class="btn-coment">💬</button>
+      </div>
+    </div>
+    
+    <div class="post">
+      <div class="post-topo">
+        <img src="foto_perfil.jpg" alt="foto perfil" class="foto-perfil">
+        <span class="nome-perfil">nomeperfil</span>
+      </div>
+    
+      <div class="post-conteudo">
+        conteúdo da postagem
+      </div>
+    
+      <div class="post-acoes">
+        <button class="btn-like">Like</button>
+        <button class="btn-coment">💬</button>
+      </div>
+    </div>    
+    <div class="fab">+</div>
 
     {% for post in comunidade.posts.all %}
     <div class="post">
@@ -110,14 +143,14 @@
 
 
 
-    <div class="container">
+    <!-- <div class="container">
       <nav class="tabs">
         <button>nº elementos</button>
         <button>nº elementos</button>
         <button>postagens</button>
         <button class="active">materiais</button>
         <button>eventos</button>
-      </nav>
+      </nav> -->
 
       <section class="materiais">
         {% for material in dados %}

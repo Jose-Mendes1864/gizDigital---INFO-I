@@ -1,0 +1,74 @@
+.post {
+    background: #e6f9e6; /* verdinho claro */
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 10px;
+    max-width: 600px; /* largura máxima */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .post-topo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+  
+  .foto-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .nome-perfil {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .post-conteudo {
+    background: #8dfc8d; /* verde mais forte */
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+  
+  .post-acoes {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .post-acoes button {
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-like {
+    background: #1eaedb;
+    color: #fff;
+  }
+  
+  .btn-coment {
+    background: #333;
+    color: #fff;
+  }
+  
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    background: #f4b630;
+    color: white;
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
