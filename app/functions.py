@@ -23,7 +23,7 @@ def capitalizadoToSnakeCase(name):
 def pega_dados_comunidade(carrega, id_comunidade):
     dados = ''
     if carrega == 'posts':
-        pass
+        dados = Post.objects.filter(comunidade__id=id_comunidade)
     elif carrega == 'eventos':
         dados = Reuniao.objects.filter(comunidade_id=int(id_comunidade))
     elif carrega == 'materiais':

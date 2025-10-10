@@ -66,55 +66,43 @@
 
 
     {% if carregar == 'posts' %}
-
+    
+    
+     {% for post in dados %}
     <div class="post">
+      
       <div class="post-topo">
-        <img src="foto_perfil.jpg" alt="foto perfil" class="foto-perfil">
-        <span class="nome-perfil">nomeperfil</span>
+        <img src="{{ post.usuario.foto.url }}" alt="{{ post.usuario.username }}" class="foto-perfil avatar" />
+
+        <span class="nome-perfil">{{post.usuario.username}}</span>
+       
+
       </div>
     
       <div class="post-conteudo">
-        conteúdo da postagem
+        {{ post.conteudo }}
       </div>
+      
+      <div>
+         {% if post.foto %}
+        
+      <img src="{{ post.foto.url }}" alt="Imagem do post" class="post-img" />
+      {% endif %}
+      </div>
+       <span class="data">Data:{{ post.data_criacao|date:"d \d\e F \d\e Y"}} <br>Horario:{{ post.data_criacao|time:"H:i"}}</span>
     
-      <div class="post-acoes">
-        <button class="btn-like">Like</button>
+      <div class="post-acoes">  
+
         <button class="btn-coment">💬</button>
       </div>
     </div>
-    
-    <div class="post">
-      <div class="post-topo">
-        <img src="foto_perfil.jpg" alt="foto perfil" class="foto-perfil">
-        <span class="nome-perfil">nomeperfil</span>
-      </div>
-    
-      <div class="post-conteudo">
-        conteúdo da postagem
-      </div>
-    
-      <div class="post-acoes">
-        <button class="btn-like">Like</button>
-        <button class="btn-coment">💬</button>
-      </div>
-    </div>    
+    {%endfor%}  
+
     <div class="fab">+</div>
 
-    {% for post in comunidade.posts.all %}
-    <div class="post">
-      <div class="post-header">
-        <img src="{{ post.autor.foto.url }}" alt="{{ post.autor.nome }}" class="avatar" />
-        <div>
-          <strong>{{ post.autor.nome }}</strong>
-          <span class="data">{{ post.data|date:"d M" }}</span>
-        </div>
-      </div>
-      <p>{{ post.conteudo }}</p>
-      {% if post.imagem %}
-      <img src="{{ post.imagem.url }}" alt="Imagem do post" class="post-img" />
-      {% endif %}
-    </div>
-    {% endfor %}
+   
+   
+  
 
 
 

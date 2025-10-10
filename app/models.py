@@ -30,11 +30,14 @@ class Comunidade(models.Model):
 class Post(models.Model):
     comunidade = models.ForeignKey(Comunidade,on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    descricao_post = models.CharField(max_length=400)
+    conteudo = models.CharField(max_length=400)
     foto = models.ImageField(upload_to=f'usuario/posts', null=True, blank=True)
     #preciso aqui identific ra imagme de quem é no banco de dados ex.: post1jose.png
-    curtidas = models.IntegerField(default=0)
+    
     data_criacao = models.DateTimeField()
+    def __str__(self):
+        return f'Post na comunidade {self.comunidade.nome} do {self.usuario.username} as {self.data_criacao}'
+
 class Comentario(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.SET_DEFAULT, default=get_usuario_padrao)

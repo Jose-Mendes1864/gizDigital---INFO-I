@@ -35,15 +35,15 @@ class ComunidadeView(LoginRequiredMixin,View):
         dados = pega_dados_comunidade(carregar, id_comunidade)
         
         comunidade = Comunidade.objects.get(id=int(id_comunidade))
-        comunidade.posts= Post.objects.filter(id=int(id_comunidade))
+        comunidade.posts= Post.objects.filter(comunidade__id=int(id_comunidade))
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
        
        
-
+        print(f'comunidade.posts{comunidade.posts}')
         return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
-    def post(self, request,id_comunidade, *args, **kwargs): # nem tudo aqui é
+    def post(self, request,id_comunidade, *args, **kwargs): # nem tudo aqui é usado só copiei e colei
         if kwargs:
             carregar = kwargs.get('carregar', 'nada')
             if kwargs.get('modificar_seguidor') != None:
@@ -59,13 +59,14 @@ class ComunidadeView(LoginRequiredMixin,View):
         dados = pega_dados_comunidade(carregar, id_comunidade)
         
         comunidade = Comunidade.objects.get(id=int(id_comunidade))
-        comunidade.posts= Post.objects.filter(id=int(id_comunidade))
+        comunidade.posts= Post.objects.filter(id=int(id_comunidade)) #para contar quantoss posts tem
+    
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
       
-       
-
+   
+        print(f'comunidade.posts{comunidade.posts}')
         return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
 
 class EnviarComunidadeView(LoginRequiredMixin, View):

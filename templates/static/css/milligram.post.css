@@ -50,6 +50,9 @@
     background: #1eaedb;
     color: #fff;
   }
+  .btn-like-red{
+    background-color: red ;
+  }
   
   .btn-coment {
     background: #333;
@@ -72,3 +75,4 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     cursor: pointer;
   }
+  
