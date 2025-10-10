@@ -7,7 +7,7 @@ from .models import Comunidade, Arquivo,Post,Reuniao
 from autenticacao.models import Opcao,PerguntaDoQuestionario,Input
 from .functions import tiraSnakeCase, pega_dados_comunidade, get_dados_input, adiciona_objetos_com_checkbox
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.hashers import check_password
@@ -99,24 +99,59 @@ class EnviarComunidadeView(LoginRequiredMixin, View):
             hora = request.POST.get('hora')
             comunidade= Comunidade.objects.get(id=id_comunidade)
             user = request.user
-            if data and hora:
-                data_str = f"{data} {hora}"
-                data_obj = datetime.strptime(data_str, "%Y-%m-%d %H:%M")
-            if "https://meet.google.com/" in url_da_reuniao:
-                evento = Reuniao(
-                criador=user,
-                comunidade=comunidade,
-                tematica=titulo,
-                descricao=descricao,
-                url_da_reuniao=url_da_reuniao,
-                data_hora=data_obj
-            )
-                evento.save()
-            else:
-                messages.add_message(request, constants.ERROR, "O lino fornecido é inválido" )
+            try:
+              
+        
+                if len(titulo.strip()) == 0:
+                    raise Exception('O valor do título da reunião não deve estar vazio')
+                if data and hora:
+                    data_str = f"{data} {hora}"
+                    data_obj = datetime.strptime(data_str, "%Y-%m-%d %H:%M")
+                    if data_obj < datetime.now():
+                        raise Exception("Por favor, insira uma data e hora valida!") 
+                if "meet.google.com" in url_da_reuniao :
+                    evento = Reuniao(
+                    criador=user,
+                    comunidade=comunidade,
+                    tematica=titulo,
+                    descricao=descricao,
+                    url_da_reuniao=url_da_reuniao,
+                    data_hora=data_obj
+                )
+                    evento.save()
+                else:
+                    raise Exception("O link fornecido é inválido" )
+                
+            except Exception as e:
+                messages.add_message(request,constants.WARNING, e )
         elif carregar == 'posts':
-            pass
-            # estrela() para que atualize
+            foto = request.FILES.get('foto')
+            conteudo = request.POST.get('conteudo')
+            data_agora = timezone.now()
+            if len(conteudo.strip()) == 0:
+                messages.add_message(request, constants.WARNING, 'O conteúdo não pode estar vazio' )
+            elif foto: 
+                post = Post(
+                    comunidade=Comunidade.objects.get(id=id_comunidade),
+                    usuario=request.user,
+                    conteudo=conteudo,
+                    data_criacao= data_agora,
+                    foto=foto
+                )
+                post.save()
+                
+            else:
+                post = Post(
+                    comunidade=Comunidade.objects.get(id=id_comunidade),
+                    usuario=request.user,
+                    conteudo=conteudo,
+                    data_criacao= data_agora,
+                   
+                )
+                post.save()
+             
+           
+            ####################### estrela() para que atualize
         return redirect('carregar', id_comunidade=id_comunidade,carregar=carregar)
             
         return HttpResponse('oi')

@@ -23,12 +23,12 @@ def capitalizadoToSnakeCase(name):
 def pega_dados_comunidade(carrega, id_comunidade):
     dados = ''
     if carrega == 'posts':
-        dados = Post.objects.filter(comunidade__id=id_comunidade)
+        dados = Post.objects.filter(comunidade__id=id_comunidade).order_by('-data_criacao')  # ordena por ordem inversa de id
     elif carrega == 'eventos':
-        dados = Reuniao.objects.filter(comunidade_id=int(id_comunidade))
+        dados = Reuniao.objects.filter(comunidade_id=int(id_comunidade)).order_by('-data_hora')  # ordena por ordem inversa de id
     elif carrega == 'materiais':
-        dados = Arquivo.objects.filter(comunidade__id = int(id_comunidade))
-
+        dados = Arquivo.objects.filter(comunidade__id = int(id_comunidade)).order_by('-id')  # ordena por ordem inversa de id
+   
     return dados
 
 def get_dados_input(input):
