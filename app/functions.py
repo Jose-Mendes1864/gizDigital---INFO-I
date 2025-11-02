@@ -5,13 +5,12 @@ from autenticacao.models import *
 from .models import  *
 import re
 from django.utils import timezone
-
+from django.db.models import Count
 
 
 def tiraSnakeCase(texto):
     corrigido =  texto.replace('_', ' ')
     
-   
     
     return corrigido.capitalize()
 
@@ -65,3 +64,29 @@ def estrela(request):
 
  # media_ponderada  = 3* (dias_criou_conta/60) + 2*quant_posts / 3+2
 
+
+# Comunidad eindex
+def verifica_se(entrada, areas_user, leciona_para):
+    areas_user_nome = [i.opcao.nome for i in areas_user]
+    leciona_para_nome = [i.opcao.nome for i in leciona_para]  
+
+    if entrada == 'area_do_saber':
+        retorno = Comunidade.objects.filter(
+            etiquetas__nome__in=areas_user_nome
+        ).distinct().exclude(etiquetas__nome__in=leciona_para_nome)
+    elif entrada == 'leciona':
+        retorno = Comunidade.objects.filter(
+            etiquetas__nome__in=leciona_para_nome    
+        ).distinct().exclude(etiquetas__nome__in=areas_user_nome)
+    elif entrada == 'area_saber + leciona':
+
+        retorno =Comunidade.objects.filter(
+                    etiquetas__nome__in=areas_user_nome).filter(etiquetas__nome__in=leciona_para_nome               
+                ).distinct().annotate(
+                    num_membros=Count('membros')
+                ).order_by('-num_membros') 
+                        #annotate(num_membros=Count('membros')) → cria um campo temporário num_membros com a contagem de membros.
+                        #order_by('-num_membros') → ordena as comunidades do maior para o menor número de membros.
+                        # esse in verifica se tem um valor dentrod e uma list esse anotate anota a a
+                    
+    return retorno

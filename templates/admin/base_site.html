@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+
+{% block branding %} 
+    <div  class="div_titulo" style="display: flex;">
+        <h1>Administração Giz Digital</h1>
+    <img class="coruja" src="{% static 'img/macotePI-removebg-preview.png' %}" alt="coruja">
+    
+    </div>
+{%endblock%}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'admin/admin.css' %}">
+{%endblock%}

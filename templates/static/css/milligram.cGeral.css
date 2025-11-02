@@ -67,7 +67,8 @@ header {
   transform: translateY(-50%);
   color: #333;
   font-size: 1rem;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .search-bar {
@@ -127,6 +128,7 @@ h3, h4 {
   border-radius: 15px;
   color: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  
 }
 
 /* Conteúdo do card */
@@ -176,4 +178,15 @@ footer {
 footer i {
   font-size: 1.5rem;
   color: #333;
+}
+.nome_comunidade {
+  display: block;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #004055;
+
+  /* --- ESSENCIAL --- */
+white-space: normal;         
+  overflow-wrap: anywhere;    
+  word-break: break-word; 
 }

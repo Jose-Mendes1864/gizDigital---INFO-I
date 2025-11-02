@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  {{request.user.email}}
+  
   <form action="{% url 'modify_profile' %}" class="form-section" method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}

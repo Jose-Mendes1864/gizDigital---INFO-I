@@ -4,11 +4,8 @@ from enum import Enum
 from .functionsModels import get_usuario_padrao
 # Create your models here.
 
-class StatusEnum(Enum):
-    RESOLVIDO = 'Resolvido'
-    EM_ANDAMENTO = 'Em andamento'
-    NAO_ANALISADO = 'Não analisado'
-    
+
+
 class Etiqueta(models.Model):
     corRGB = models.CharField(max_length=13)
     nome = models.CharField(max_length=200)
@@ -19,7 +16,7 @@ class Comunidade(models.Model):
     descricao = models.TextField(verbose_name='descrições')
     etiquetas = models.ManyToManyField(Etiqueta,related_name='comunidades')
     membros = models.ManyToManyField(Usuario, related_name='comunidades')
-  
+    
     capa_comunidade = models.FileField(upload_to='comunidade/capa')
 
 
@@ -36,23 +33,16 @@ class Post(models.Model):
     
     data_criacao = models.DateTimeField()
     def __str__(self):
-        return f'Post na comunidade {self.comunidade.nome} do {self.usuario.username} as {self.data_criacao}'
+        return f'{self.usuario.username} conteudo: {self.conteudo[:20 ] + '...'}'
 
 class Comentario(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     usuario = models.ForeignKey(Usuario, on_delete=models.SET_DEFAULT, default=get_usuario_padrao)
     criacao = models.DateTimeField()
     conteudo = models.TextField()
-class MotivoSuporte(models.Model):
-    motivo = models.CharField(max_length=60)
     def __str__(self):
-        return self.motivo
-    
-class RequisicaoSuporte(models.Model):
-    motivo = models.ForeignKey(MotivoSuporte, on_delete=models.SET_NULL, null=True)
-    status = models.CharField(max_length=20, choices= [(tag.name, tag.value) for tag in StatusEnum])
-    descricao = models.TextField()
-    foto = models.FileField(upload_to='usuario/requisicao', null=True, blank=True)
+        return f'{self.usuario.username} - {self.conteudo}'
+
 class Arquivo(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     comunidade = models.ForeignKey(Comunidade, on_delete=models.CASCADE)
@@ -70,5 +60,8 @@ class Reuniao(models.Model):
     descricao = models.CharField(max_length=100, default=None)
     url_da_reuniao = models.CharField(max_length=100)
     data_hora = models.DateTimeField()
+    class Meta:
+        verbose_name_plural = 'Reuniões'
     def __str__(self):
-        return f'{self.criador} - {self.data_hora} - {self.tematica}'
+        return f'{self.criador} -  {self.tematica} - {self.data_hora.strftime("%d de %B de %Y, %Hh%M")}'
+    

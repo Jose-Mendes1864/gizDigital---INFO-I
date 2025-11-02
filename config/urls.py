@@ -21,9 +21,12 @@ from .views import sair
 
 
 from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
 from . import settings
 urlpatterns = [
     path('', lambda request : redirect('login') if  not request.user.is_authenticated  else redirect('indexComunidade') ),
+    path('admin/logout/', LogoutView.as_view(next_page='/'), name='admin_logout'),
+
     path('admin/', admin.site.urls),
     path('auth/', include('autenticacao.urls')),
     path('app/', include('app.urls')),

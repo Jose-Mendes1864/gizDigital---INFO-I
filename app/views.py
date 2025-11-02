@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,PergutasCheckBox
 from .models import Comunidade, Arquivo,Post,Reuniao
 from autenticacao.models import Opcao,PerguntaDoQuestionario,Input
-from .functions import tiraSnakeCase, pega_dados_comunidade, get_dados_input, adiciona_objetos_com_checkbox
+from .functions import tiraSnakeCase, pega_dados_comunidade, get_dados_input, adiciona_objetos_com_checkbox,verifica_se
 import os
 from datetime import datetime, timezone
 from django.contrib import messages
@@ -13,17 +13,47 @@ from django.contrib.messages import constants
 from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from django.contrib import auth
+from django.db.models import QuerySet,Count
+
 # Create your views here.
+
+    
 
 class IndexComunidadeView(LoginRequiredMixin,View):
     template_name = "indexComunidade.html"
     login_url = 'login'
     def get(self, request, *args, **kwargs):
-        comunidades = Comunidade.objects.all()
+        quantidade_de_comunidade_maxima_exibidas = 8
+        # filtro funciona assim:
+             # primeiro tenta pegar por area do saber e por publico que leciona(fundamental. ...) depois se for abaixo do máximo pio por um ou outroe depoos ordenam por quem tem mais membros 
         
-        return render(request, 'indexComunidade.html', {'comunidades':comunidades })
-    
+        areas_user = PergutasCheckBox.objects.filter(opcao__pergunta__titulo_pergunta='area_do_saber',usuario=request.user)
       
+        leciona_para = PergutasCheckBox.objects.filter(opcao__pergunta__titulo_pergunta='para_quem_leciona',usuario=request.user)
+     
+        comunidades_selecionadas = []
+        # tento ver elass juntas
+        comunidades_selecionadas = list(verifica_se('area_saber + leciona', areas_user=areas_user, leciona_para=leciona_para))
+        
+        if len(comunidades_selecionadas) < quantidade_de_comunidade_maxima_exibidas: # ai pega só por area do saber
+            aux = list(verifica_se('area_do_saber', areas_user=areas_user, leciona_para=leciona_para))
+            comunidades_selecionadas.extend(aux[:quantidade_de_comunidade_maxima_exibidas - len(comunidades_selecionadas)])
+        else:
+            comunidades_selecionadas = comunidades_selecionadas[:quantidade_de_comunidade_maxima_exibidas] # limita o valor
+        
+        if len(comunidades_selecionadas) < quantidade_de_comunidade_maxima_exibidas: # ai pega os valores  de quem leciona
+            aux = list(verifica_se('leciona', areas_user=areas_user, leciona_para=leciona_para))
+            comunidades_selecionadas.extend(aux[:quantidade_de_comunidade_maxima_exibidas - len(comunidades_selecionadas)])
+        
+
+  
+        comunidades_selecionadas_querry_set  = Comunidade.objects.filter(id__in=[c.id for c in comunidades_selecionadas])
+        comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros').exclude(   
+                 id__in=comunidades_selecionadas_querry_set.values_list('id', flat=True
+                ))
+        
+        
+        return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque })
 
 class ComunidadeView(LoginRequiredMixin,View):
     def get(self, request,id_comunidade, *args, **kwargs):
@@ -184,7 +214,7 @@ class PerfilEditView(LoginRequiredMixin,View):
                     for i in repostas_objects:
                         lista.append(i.resposta)
                     dados_usuario[indice] = lista
-                    print(f'Valor de dados {dados_usuario}')
+                    # print(f'Valor de dados {dados_usuario}')
                     
         except Exception as e:
             dados_usuario['i'] = 'Valor indefinido'
@@ -214,6 +244,7 @@ class PerfilEditView(LoginRequiredMixin,View):
         return render(request, self.template_name, {'user': request.user, 'dados_com_select':dados_com_select,  'dados_com_checkbox': dados_com_checkbox,'dados_usuario': dados_usuario_ordenado, 'redefine_senha_status':redefine_senha_status}) 
     def post(self, request, *args, **kwargs):
         return HttpResponse('Em processo')
+
 class VerPerfilView(LoginRequiredMixin, View):
     def get(self, request, id,*args, **kwargs):
         return HttpResponse(f'Ver pefil {id}')
@@ -322,3 +353,34 @@ class RedefineSenhaView(LoginRequiredMixin,View):
 
                 messages.add_message(request, constants.SUCCESS, "Senha redefinida com sucesso")
             return redirect('perfil')
+def pesquisar(request):
+    if request.method == 'POST':
+        pesquisa_por = request.POST.get('conteudo').strip(' ')
+        remove_espacos =  pesquisa_por.split(' ') 
+        print(f'valor remove_espacos = {remove_espacos}')
+
+        comunidades_filtradas = []
+        filtrar_toda_string = (Comunidade.objects.filter(nome=pesquisa_por))
+        if filtrar_toda_string.exists():
+            comunidades_filtradas.append(filtrar_toda_string[0])
+       
+       
+        for i in range(0, len(remove_espacos) -1): # verifica se  duas palarvas uma do lado da outra tem comunidade correspondente
+            termo = str(remove_espacos[i] + " "   + remove_espacos[i+1])
+            aux = Comunidade.objects.filter(nome__icontains = termo )
+            if aux.exists():
+                for j in aux:
+                    if j not in comunidades_filtradas:
+                        comunidades_filtradas.append(j)
+        for i in remove_espacos:
+           
+            if len(i) >2:
+                aux = Comunidade.objects.filter(nome__icontains = i )
+                if aux.exists():
+                    for j in aux:
+                        if j not in comunidades_filtradas:
+                            comunidades_filtradas.append(j)
+        print(f'Valorr comunidade filtrada {comunidades_filtradas}')
+      
+        return render(request, 'filtrado.html', {'comunidades_filtradas':comunidades_filtradas})
+    

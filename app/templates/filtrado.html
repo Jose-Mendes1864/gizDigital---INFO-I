@@ -28,10 +28,10 @@
 
   <div class="container">
       <section class="recommended">
-      <h2>Comunidades Recomendadas:</h2>
+      <h2>Comunidades filtradas:</h2>
       <div class="card-group" >
-        {%if comunidades %}
-        {% for comunidade in comunidades %}
+        {%if comunidades_filtradas %}
+        {% for comunidade in comunidades_filtradas %}
     <div class="card {{ comunidade.etiqueta }}" >
                                       
       <div class="card-content">
@@ -61,7 +61,7 @@
           <div class="card" >                              
       <div class="card-content">
               <div>        
-                <p class="desc">Sem comunidades recommendadas</p> 
+                <p class="desc">A pesquisa não obteve resultados :(</p> 
             </div>            
             </div>
       </div>
@@ -69,35 +69,7 @@
       </div>
     </section>
 
-    <section class="highlights">
-      <h2>Destaques:</h2>
-      <div class="card-group">
-        {% if comunidades_destaque  %}
-        {% for comunidade in comunidades_destaque %}
-          <div class="card {{ comunidade.cor }}">
-            <div class="card-content">
-              <img src="{{ comunidade.capa_comunidade.url }}" alt="{{ comunidade.nome }}" />
-              <div>
-                <h3>{{ comunidade.nome }}</h3>
-                <p>{{ comunidade.membros.count }} membros</p>
-                <p class="desc">{{ comunidade.descricao|truncatewords:10 }}</p>
-              </div>
-            </div>
-              <button><a href="{% url 'comunidade' comunidade.id%} ">entrar</a></button>
-          </div>
-          
-        {% endfor %}
-        {% else %}
-          <div class="card" >                              
-      <div class="card-content">
-              <div>        
-                <p class="desc">Sem comunidades em destaque</p> 
-            </div>            
-            </div>
-      </div>
-        {%endif%}
-      </div>
-    </section>
+    
   </div>
   <footer>
       <i class="fas fa-user"></i>

@@ -11,6 +11,7 @@ from .functions import enviar_email_async
 import secrets
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 # Create your views here.
 # class moldeView(View):
@@ -32,33 +33,32 @@ class LoginView(View):
     def get(self,request, *args, **kwargs):
         if request.user.is_authenticated:
             # combina a pesquisa + o request .user
-         
+            if request.user.is_staff == 1:
+                return redirect(reverse('admin:index')) #reverse retorna a url de index:admin
             return redirect('indexComunidade')
 
 
         return render(request, 'login.html')
     def post(self,request, *args, **kwargs):
         if request.user.is_authenticated:
-       
+            if request.user.is_staff == 1:
+                return redirect(reverse('admin:index'))
             return redirect('indexComunidade')
  
         email = request.POST.get('email').strip()
         senha = request.POST.get('senha')
-        print(email)
-        print(senha)
-
+       
         usuario = auth.authenticate(request, username=email, password=senha)
 
         if not usuario:
             messages.add_message(request, constants.ERROR, 'Por favor insira email e senha corretos')
             return redirect('login')
-        else:
-       
-                
-            auth.login(request, usuario)
+        else:  
             
-          
-
+                
+            auth.login(request, usuario) 
+            if request.user.is_staff == 1:
+                return redirect(reverse('admin:index')) #reverse retorna a url de index:admin   
             return redirect('indexComunidade')
     
     

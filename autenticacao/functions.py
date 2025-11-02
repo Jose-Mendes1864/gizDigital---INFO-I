@@ -69,3 +69,12 @@ def enviar_email_async(email_destinatario,codigo_aleatorio):
     thread = threading.Thread(target=enviar_email, args=(email_destinatario,codigo_aleatorio))
     thread.start()
 
+
+def tiraSnakeCase(texto):
+    corrigido =  texto.replace('_', ' ')
+    
+    
+    return corrigido.capitalize()
+def capitalizadoToSnakeCase(name):
+    name = name.replace(' ', '_')
+    return name.lower()

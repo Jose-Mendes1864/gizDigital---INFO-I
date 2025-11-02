@@ -1,0 +1,15 @@
+:root{
+    --header-bg:#168d9a;
+}
+
+
+.module h2,.module caption, .inline-group h2{
+    background-color: #2a006a;
+    color: white;
+}
+.coruja{
+    height: 100%;
+}
+.div_titulo{
+    height: 7vh;
+}
