@@ -9,8 +9,9 @@ from django.contrib.auth.models import Group
 # versão original:
 admin.site.register(Opcao)
 
-
+admin.site.register(PerguntaUsuario)
 admin.site.unregister(Group)
+admin.site.register(PergutasCheckBox)
 class PerguntaInline(admin.TabularInline):
     list_display = ['pergunta', 'resposta']
     model = PerguntaUsuario

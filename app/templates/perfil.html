@@ -78,6 +78,7 @@
         {% for key,value in dados_usuario.items %}
         {% if key != 'date_joined' and key != 'Biografia'  and key not in dados_com_select and key not in dados_com_checkbox%}
         <div class="form-group">
+  
           <label for="{{key}}">{{key}}</label>
           <input type="text" value="{{value}}" name="{{key}}" id="{{key}}">
         </div>
@@ -93,12 +94,13 @@
         {% for key,value in dados_com_checkbox.items %}
         <div class="form-group">
           <label>{{key}}</label>
+              
+
           <div class="dive checkbox" id="{{key}}">
             {% for i in value %}
-
-
-            <input type="checkbox" id="{{i}}" name="{{key}}" value="{{i}}" {%if i|stringformat:"s" in dados_usuario|dict_get:key %} checked {%endif%}>
-            <label for="{{i}}">{{i}}</label>
+            
+            <input type="checkbox" id="{{i}}" name="{{key}}" value="{{i.nome}}" {%if i.nome|stringformat:"s" in dados_usuario|dict_get:key %} checked {%endif%}>
+            <label for="{{i}}">{{i.nome}}</label>
 
 
 
@@ -115,7 +117,6 @@
           <select name="{{key}}" id="">
 
             {% for j in value %}
-
             <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}
             </option>
 

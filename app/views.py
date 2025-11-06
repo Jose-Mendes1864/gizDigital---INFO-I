@@ -230,7 +230,7 @@ class PerfilEditView(LoginRequiredMixin,View):
     
         chaves_ordenadas = ['Biografia','Nome completo', 'Nome de usuario', 'Email', 'Area do saber', 'Anos de experiencia',  'Material','Notificacoes', 'Para quem leciona','date_joined']
         dados_usuario_ordenado = {}
-        print(f'Valor de dados usuario: {dados_usuario}')
+        # print(f'Valor de dados usuario: {dados_usuario}')
         try:
            for i in chaves_ordenadas:
           
@@ -272,34 +272,42 @@ class ModificarPerfilView(LoginRequiredMixin, View):
             dados_sem_csrf[i] = j
             
         dados = dados_sem_csrf
+        print(f'Valor de dados {dados}')
         for nome_campo,value in dados.items():
              nome_campo =nome_campo.lower()
              campo_in_questionario = PerguntaUsuario.objects.filter(user=request.user, pergunta__titulo_pergunta=nome_campo)
              campo_in_checkbox = PergutasCheckBox.objects.filter(usuario=request.user,opcao__pergunta__titulo_pergunta=nome_campo)
-         
+        
              if campo_in_questionario or campo_in_checkbox:
                  print(f'teste{len(campo_in_questionario)} e campo checkcbox {campo_in_checkbox}')
                  if len(campo_in_questionario) == 1:
+                    print('iuuuuuuuuuuuuuuu')
+
                     instancia = campo_in_questionario.first()
                    
                       
                     setattr(instancia, 'resposta' ,value[0])
                     instancia.save()
                  else: # quer dizer que campo in questionario não retonrou nada
+                  
                     pergunta = PerguntaDoQuestionario.objects.get(titulo_pergunta=nome_campo)
                     opcoes = []
                     opcoes.append(PergutasCheckBox.objects.filter(opcao__pergunta=pergunta)) # pega os valroes selecionados pelo usuario com a pergunta
-
+                    print(f'Valor de opções: {opcoes}')
                     for i in opcoes:
+                       
                         i.delete()
                     print(f'Valor de value {value}')
                     for i in value:
                         op = Opcao.objects.get(nome=i, pergunta__titulo_pergunta=nome_campo)
+                        print(f'Valor de op {op}')
+
                         p = PergutasCheckBox(
                             opcao=op,
                             usuario=request.user
 
                         ) 
+                     
                         p.save()
 
 
