@@ -117,7 +117,7 @@
           <select name="{{key}}" id="">
 
             {% for j in value %}
-            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j}}
+            <option value="{{j}}" {% if j|stringformat:"s" in dados_usuario|dict_get:key %}selected{%endif%}>{{j.nome}}
             </option>
 
             {%endfor%}

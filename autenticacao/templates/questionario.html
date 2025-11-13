@@ -37,11 +37,10 @@
                     {% for op in opcoes %}
 
                     {%if op.pergunta.titulo_pergunta == pergunta.titulo_pergunta %}
-                    <option value="{{op}}">{{op}}</option>
+                    <option value="{{op}}">{{op.nome}}</option>
                     {%endif%}
                     {%endfor%}
                 </select>
-                <h1> colocar com filtro depois</h1>
             </div>
 
             {% elif pergunta.tipo_input|lower|cut:" " == 'textarea' %}
@@ -49,7 +48,7 @@
                 <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
                 <br>
 
-                <textarea required name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}" ></textarea>
+                <textarea required name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"></textarea>
 
             </div>
             {% elif pergunta.tipo_input|lower|cut:" " == 'checkbox' %}
