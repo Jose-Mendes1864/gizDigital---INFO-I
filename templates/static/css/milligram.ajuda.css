@@ -1,0 +1,48 @@
+.ajuda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.ajuda-header h2 {
+  font-size: 1.4em;
+  margin: 0;
+}
+
+.ajuda-header i {
+  font-size: 1.2em;
+  color: #333;
+}
+
+.ajuda-header button {
+  background-color: #00c2c2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 15px;
+  display: block;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f0f8ff;
+}

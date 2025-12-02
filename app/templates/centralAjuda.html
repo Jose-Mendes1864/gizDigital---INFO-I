@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central de Ajuda</title>
+  <link rel="stylesheet" href="{% static 'css/milligram.cGeral.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/milligram.ajuda.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header class="ajuda-header">
+    <a href="{% url 'index' %}"><i class="fas fa-arrow-left"></i></a>
+    <h2>Central de ajuda</h2>
+    <button type="submit" form="form-ajuda">enviar</button>
+  </header>
+
+  <div class="container">
+    <form id="form-ajuda" action="{% url 'enviar_ajuda' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="assunto">Assunto:</label>
+      <input type="text" id="assunto" name="assunto" required />
+
+      <label for="mensagem">Mensagem:</label>
+      <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+
+      <label for="imagem">Se necessário, adicione imagem:</label>
+      <input type="file" id="imagem" name="imagem" accept="image/*" />
+    </form>
+  </div>
+
+  <!-- <script src="{% static 'js/index.js' %}"></script>  provavelmente adicionar js mais tarde -->
+</body>
+</html>
