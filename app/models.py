@@ -15,7 +15,7 @@ class Comunidade(models.Model):
     nome = models.CharField(max_length=60 )
     descricao = models.TextField(verbose_name='descrições')
     etiquetas = models.ManyToManyField(Etiqueta,related_name='comunidades')
-    membros = models.ManyToManyField(Usuario, related_name='comunidades')
+    membros = models.ManyToManyField(Usuario, related_name='comunidades', null=True, blank=True)
     
     capa_comunidade = models.FileField(upload_to='comunidade/capa')
 

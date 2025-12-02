@@ -50,7 +50,7 @@ class IndexComunidadeView(LoginRequiredMixin,View):
         comunidades_selecionadas_querry_set  = Comunidade.objects.filter(id__in=[c.id for c in comunidades_selecionadas])
         comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros').exclude(   
                  id__in=comunidades_selecionadas_querry_set.values_list('id', flat=True
-                ))
+                ))[:5]
         
         
         return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque })
