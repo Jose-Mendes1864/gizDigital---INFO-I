@@ -8,19 +8,34 @@
   <link rel="stylesheet" href="{% static 'css/milligram.cGeral.css' %}" />
     <link rel="stylesheet" href="{% static 'css/milligram.ajuda.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
   <header class="ajuda-header">
-    <a href="{% url 'index' %}"><i class="fas fa-arrow-left"></i></a>
+    <a href="{% url 'indexComunidade' %}"><i class="fas fa-arrow-left"></i></a>
     <h2>Central de ajuda</h2>
     <button type="submit" form="form-ajuda">enviar</button>
   </header>
 
   <div class="container">
-    <form id="form-ajuda" action="{% url 'enviar_ajuda' %}" method="POST" enctype="multipart/form-data">
+    {% if messages %}
+     {% for m in messages%}
+              <div class="alert {{m.tags}}" role="alert">{{m}}</div>
+    {%endfor %}
+    {%endif%}
+
+    <form id="form-ajuda" action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <label for="assunto">Assunto:</label>
-      <input type="text" id="assunto" name="assunto" required />
+      <label for="motivo">Motivo:</label>
+      <select name="motivo" id="motivo">
+         <option value="" disabled>-----------------------------</option>
+        {% for m in motivos %} 
+        <option value="{{m}}">{{m}}</option>
+        {%endfor%}
+      </select>
+
 
       <label for="mensagem">Mensagem:</label>
       <textarea id="mensagem" name="mensagem" rows="5" required></textarea>

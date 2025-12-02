@@ -26,11 +26,11 @@ from . import settings
 urlpatterns = [
     path('', lambda request : redirect('login') if  not request.user.is_authenticated  else redirect('indexComunidade') ),
     path('admin/logout/', LogoutView.as_view(next_page='/'), name='admin_logout'),
-
+    path('suporte/',include('suporte.urls')),
     path('admin/', admin.site.urls),
     path('auth/', include('autenticacao.urls')),
     path('app/', include('app.urls')),
-    path('sair/', sair, name='sair')
+    path('sair/', sair, name='sair'),    
 
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
