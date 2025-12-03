@@ -25,14 +25,14 @@
             <div class="perguntaContainer">
                 <h2 id="pergunta">{{pergunta.texto_pergunta}}</h2>
                 <input name="{{pergunta.titulo_pergunta}}" type="{{pergunta.tipo_input}}"
-                    id="{{pergunta.titulo_pergunta}}" placeholder="{%if pergunta.placeholder%}{{pergunta.placeholder}}{%endif%}" required>
+                    id="{{pergunta.titulo_pergunta}}" placeholder="{%if pergunta.placeholder%}{{pergunta.placeholder}}{%endif%}" required class="inputQuiz">
                 <br>
             </div>
             {% elif pergunta.tipo_input|lower|cut:" " == 'select' %}
 
             <div class="perguntaContainer" style="display: none;">
                 <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
-                <select name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}" required>
+                <select name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}" required  class="inputQuiz">
                     <option  disabled selected></option>
                     {% for op in opcoes %}
 
@@ -48,19 +48,25 @@
                 <label for="{{pergunta.titulo_pergunta}}">{{pergunta.texto_pergunta}}</label>
                 <br>
 
-                <textarea required name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"></textarea>
+                <textarea required name="{{pergunta.titulo_pergunta}}" id="{{pergunta.titulo_pergunta}}"   class="inputQuiz" ></textarea>
 
             </div>
             {% elif pergunta.tipo_input|lower|cut:" " == 'checkbox' %}
-            <div class="perguntaContainer" style="display: none;">
+            <div class="perguntaContainer" style="display: none;" ">
                 {{pergunta.texto_pergunta}}
                 {% for op in opcoes %}
 
                 {%if op.pergunta.titulo_pergunta == pergunta.titulo_pergunta %}
                 <div>
                     <label>
-                        <input type="{{pergunta.tipo_input}}" name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}" required>
+            {% if forloop.first %}
+                      <input type="checkbox"  name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}"  checked>
+                      {{op.nome}}
+                   {%else%}
+                   <input type="{{pergunta.tipo_input}}" name="{{pergunta.titulo_pergunta}}" value="{{op.nome}}"  >
                         {{op.nome}}
+
+                        {%endif%}
                     </label>
                 </div>
 
@@ -80,6 +86,7 @@
     </form>
     <h1><a href="{% url 'sair' %}">Botao provisorio para sair daqui</a></h1>
     <script src="{% static 'js/questionario.js'%}"></script>
+   
 </body>
 
 </html>

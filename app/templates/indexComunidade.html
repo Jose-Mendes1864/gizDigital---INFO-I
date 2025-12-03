@@ -24,6 +24,7 @@
         </form>
       </div>
       <h2><a href="{% url 'sair' %}">Logout</a></h2>
+      <a href="{% url 'suporte' %}">Suporte</a>
     </header>
 
   <div class="container">
@@ -99,9 +100,27 @@
       </div>
     </section>
   </div>
+   
   <footer>
       <i class="fas fa-user"></i>
-      <i class="fas fa-plus"></i>
+      {%if request.user.pontuacao < 4 %}
+        <i class="fas fa-plus add-comu-user-normal" style="opacity: 0.4;" ></i>
+        <script>
+          let aux = document.querySelector('.add-comu-user-normal')
+          aux.addEventListener('click', ()=> {
+            alert('Você só poderá criar comunidade se tiver mais de 4 estrelas')
+          })
+        </script>
+      {%else %}
+       <i class="fas fa-plus add-comu-user-premium" ></i>
+        <script>
+          let aux2 = document.querySelector('.add-comu-user-premium')
+          aux2.addEventListener('click', ()=> {
+            alert('Você pode criar comunidade, deve aparecer o menu aqui')
+          })
+        </script>
+      {%endif%}
+   
       <i class="fas fa-pencil-alt"></i>
     </footer>
     <script src="{% static 'js/index.js'%}"></script>

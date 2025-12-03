@@ -7,16 +7,25 @@ for (let i = 1; i < divPerguntas.length; i++) {
 
 let btn_proximo = document.getElementById("btn-proximo");
 let cont = 0;
-
 if (btn_proximo) {
+    
     btn_proximo.addEventListener('click', () => {
-        cont += 1;
+        
+        let input = document.querySelector('.inputQuiz')
+        
+        if(input.value == '' || input.value == 'none'){
+            alert('Digite um valor válido ' + input.value)
 
-        if (cont >= divPerguntas.length) {
+        }
+        else if (cont +  1 >= divPerguntas.length) {
             let form = document.getElementById('form')
             form.submit()
          
         } else {
+            cont += 1;
+
+            
+
             divPerguntas[cont].style.display = 'block';
             divPerguntas[cont - 1].style.display = 'none';
         }

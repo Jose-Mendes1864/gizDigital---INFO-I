@@ -159,11 +159,12 @@ class RedefinirSenha(View):
 
         return  redirect('login')
 
-class Questionario(LoginRequiredMixin,View):
+class Questionario(View):
     template_name = "questionario.html"
     login_url = 'login'
     def get(self, request, *args, **kawrgs):
         perguntas =PerguntaDoQuestionario.objects.all()
+     
         opcoes = Opcao.objects.all()
          
         
@@ -188,10 +189,11 @@ class Questionario(LoginRequiredMixin,View):
         
         for key, value in dados.items():
             value = value[0].strip()
-            print('entrou aqui')
+            
             if PerguntaDoQuestionario.objects.filter(tipo_input=Input.objects.get(nome='checkbox'), titulo_pergunta=key) :
               
                 dados_check = dados[key]
+             
                 for dado in dados_check:
                     dado_selecionado = Opcao.objects.get(nome=dado)
                     m = PergutasCheckBox(

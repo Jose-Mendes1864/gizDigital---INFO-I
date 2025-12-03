@@ -99,8 +99,9 @@
     </div>
     {%endfor%}  
     
-
-    <div class="fab">+</div>
+     
+          <div class="fab">+</div>
+    
 
    
    
@@ -188,7 +189,7 @@
       
       </section>
 
-      <button class="add-btn"><i class="fas fa-plus"></i></button>
+      <button class="add-btn"><i class="fab fa-plus"></i></button>
 
     <form action="{% url 'enviar_comunidade' comunidade.id carregar %}" method="POST" enctype="multipart/form-data">
       
@@ -272,7 +273,7 @@
 
       </section>
 
-      <button class="add-btn"><i class="fas fa-plus"></i></button>
+      <button class="add-btn"  {%if request.user.pontuacao < 4 %}  style="opacity: 0.4;cursor: not-allowed !important;"{%endif%} ><i class="fab fa-plus" {%if request.user.pontuacao < 4 %}  style="opacity: 0.4;cursor: not-allowed !important;"{%endif%}></i></button>
 
       <div class="popup evento">
       <form action="{% url 'enviar_comunidade' comunidade.id carregar %}" method="POST" enctype="multipart/form-data">
@@ -303,6 +304,18 @@
 
 
 </body>
+<script>
+  let fab  = document.querySelector('.fab')
+  let popup = document.querySelector('.popup')
+  popup.style.display = 'none';
+  fab.addEventListener('click', ()=> {
+    if(fab.style.cursor != 'not-allowed'){
+    let popupAtual = document.querySelector('.popup')
 
+    popupAtual.style.display = 'block';
+    }else{
+      alert('Você não possui permissão para tal ação')
+    }
+  } )
+</script>
 </html>
-<!-- Fala josé! Essa aqui foi a pagina que definitivamente me deu mais trabalho, qualquer pergunta, pode entrar em contato comigo, mas acho que voce vai entender, eu que quebrei a cabeça kskskks -->
