@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from  django.shortcuts import redirect
-from .views import  IndexComunidadeView, ComunidadeView, PerfilEditView,EnviarComunidadeView,VerPerfilView,ModificarPerfilView,RedefineSenhaView,pesquisar
+from .views import  IndexComunidadeView, ComunidadeView, PerfilEditView,EnviarComunidadeView,VerPerfilView,ModificarPerfilView,RedefineSenhaView,ComentarView, pesquisar
 urlpatterns = [
     path('', IndexComunidadeView.as_view(), name='indexComunidade'),
     path('comunidade/search/',pesquisar, name='pesquisar'),
     path('comunidade/<int:id_comunidade>/', ComunidadeView.as_view(), name='comunidade'),
     path('comunidade/<int:id_comunidade>/<str:carregar>/', ComunidadeView.as_view(), name='carregar'),
+    path('comunidade/comentar/<int:post_id>', ComentarView.as_view(), name='comentar' ),
     path('comunidade/enviar_arquivo/ <int:id_comunidade>/<str:carregar>/', EnviarComunidadeView.as_view(), name='enviar_comunidade'),
 
     path('comunidade/<int:id_comunidade>/<str:carregar>/<str:modificar_seguidor>', ComunidadeView.as_view(), name='modifica_joined'),

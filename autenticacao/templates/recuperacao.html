@@ -14,6 +14,7 @@
 
 <body>
   <!-- PAGINA INICIAL -->
+
   {%if carregar == 'email_insert' %}
   <div class="container container-1">
     <h2>Recuperar Senha</h2>
@@ -22,37 +23,42 @@
     <form method="POST" action="{% url 'forget_password'%}?acao=insert_code" o>
 
       {% csrf_token %}
-      {% if messsages %}
-      {% for i in message %}
-      {{i}}
-      {% endfor %}
-      {%endif%}
-      <div class="message" style="text-align: center;">
+  <div class="message" style="text-align: center;">
         {% if messages %}
         {% for message in messages%}
         <div class="alert {{ message.tags}}" role="alert">{{message}}</div>
         {% endfor %}
         {% endif %}
-      </div>
+      </div>    
+    
       <label for="email">E-mail</label>
       <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
 
       <div class="center-button">
         <button class="button-primary" type="submit">Enviar código</button>
+        <button ><a href="{% url 'login' %}" style="color: white;">Login</a></button>
+        
       </div>
     </form>
 
 
 <!-- CODIGO OPCAO DE DIGITAR -->
 
-    {%elif carregar == 'code_insert' %}
+    {%elif carregar == 'insert_code' %}
     
     <div class="container container-2">
       <h2>Recuperar Senha</h2>
-   testye   {{user.username}}
+        Olá,{{user.username}}
       <p>Ola! {{user.username}}, insira o codigo enviado para seu email</p>      
    <form action="{% url 'forget_password'%}?acao=new_password" method="POST" id="form-codigo" onsubmit="uneElemento()">
         {% csrf_token %}
+          <div class="message" style="text-align: center;">
+        {% if messages %}
+        {% for message in messages%}
+        <div class="alert {{ message.tags}}" role="alert">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+      </div>
         <div class="code-inputs">
           <input type="text" maxlength="1" required class="inputCodigo" autofocus>
           <input type="text" maxlength="1" required class="inputCodigo">
@@ -62,8 +68,11 @@
           <input type="text" maxlength="1" required class="inputCodigo">
           <input type="hidden" name="codigo" id="codigo" value="nada">
         </div>
+        
         <button type="submit">Confirmar</button>
+        <button ><a href="{% url 'login' %}" style="color: white;">Login</a></button>
       </form>
+
     </div>
     <script>
       let inputs = document.querySelectorAll('.inputCodigo')
@@ -88,13 +97,20 @@
     <div class="container container-3">
       <h2>Nova Senha</h2>
       <p>Ola! {{user.username}}, defina uma nova senha</p>
-      <div class="alert-danger" id="message" role="alert"></div>
+        <div class="message" style="text-align: center;">
+        {% if messages %}
+        {% for message in messages%}
+        <div class="alert {{ message.tags}}" role="alert">{{message}}</div>
+        {% endfor %}
+        {% endif %}
+      </div>
       <br>
       <form id="form-senha-nova" method="POST" action="{% url 'redefinir_senha'%}" onsubmit="validaLogin(event)">
         {% csrf_token %}
         <input class="senha" type="password" name="senha" placeholder="Nova senha" required autocomplete="new-password" autofocus>
         <input class="senhaAgain" type="password" placeholder="Confirmar senha" required autocomplete="new-password">
         <button type="submit">Redefinir</button>
+        <button ><a href="{% url 'login' %}" style="color: white;">Login</a></button>
       </form>
     </div>
 
@@ -103,6 +119,7 @@
   </div>
   {%endif%}
 
+           
 
   <script src="{% static 'js/recuperacao.js' %}"></script>
 

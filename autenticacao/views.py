@@ -132,17 +132,23 @@ class ForgetView(View):
                 request.session['emailNovaSenha'] = email
                 request.session['token'] = token #salvar isso em outra coisa, que se abrir o inspecionar
              
-                return render(request,'recuperacao.html',{'token': token, 'carregar':'code_insert', 'user':usuario[0]})
+                return render(request,'recuperacao.html',{'token': token, 'carregar':'insert_code', 'user':usuario[0]})
             
             else:
-                
                 messages.add_message(request, constants.ERROR, 'Email não correspondente a nenhuma conta')
+                return render(request, 'recuperacao.html', {'carregar':'email_insert', 'user':usuario}) 
         
         elif acao =='new_password':
-            usuario_email =request.session.get('emailNovaSenha')
-            usuario = Usuario.objects.get(email=usuario_email)
-            return render(request, 'recuperacao.html', {'carregar':'new_password', 'user':usuario}) # nem precisava de valor já que ta no else mas melhor colcoar
-        
+            codigo = request.POST.get('codigo')
+            token = (request.session.get('token')).replace(' ', '')
+            print(f'Valor token {token}')
+            if  codigo ==token:
+               usuario_email =request.session.get('emailNovaSenha')
+               usuario = Usuario.objects.get(email=usuario_email)
+               return render(request, 'recuperacao.html', {'carregar':'new_password', 'user':usuario}) # nem precisava de valor já que ta no else mas melhor colcoar
+            else:
+                messages.add_message(request, constants.ERROR, 'O código esta incorreto, por favor verfique')
+                return render(request, 'recuperacao.html', {'carregar':'insert_code'} )
 class RedefinirSenha(View):
     def get(self, request, *args, **kawrgs):
         return HttpResponse('Deu get no redefinir senha')

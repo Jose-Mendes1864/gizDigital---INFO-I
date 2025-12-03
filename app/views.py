@@ -3,11 +3,12 @@ from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,PergutasCheckBox
-from .models import Comunidade, Arquivo,Post,Reuniao
+from .models import Comunidade, Arquivo,Post,Reuniao,Comentario
 from autenticacao.models import Opcao,PerguntaDoQuestionario,Input
 from .functions import tiraSnakeCase, pega_dados_comunidade, get_dados_input, adiciona_objetos_com_checkbox,verifica_se
 import os
-from datetime import datetime, timezone
+from django.utils import timezone
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.messages import constants
 from django.contrib.auth.hashers import check_password
@@ -90,7 +91,7 @@ class ComunidadeView(LoginRequiredMixin,View):
         
         comunidade = Comunidade.objects.get(id=int(id_comunidade))
         comunidade.posts= Post.objects.filter(id=int(id_comunidade)) #para contar quantoss posts tem
-    
+
         user_joinded = Usuario.objects.filter(comunidades=comunidade.id, id=request.user.id).exists()
                 # user .filter pois o .get não possui o método exists
 
@@ -98,6 +99,25 @@ class ComunidadeView(LoginRequiredMixin,View):
    
         print(f'comunidade.posts{comunidade.posts}')
         return render(request, 'comunidade.html', {'comunidade':comunidade,'carregar':carregar, 'dados':dados ,'user_joined':user_joinded})
+class ComentarView(LoginRequiredMixin, View):
+    def get(self, request, post_id,*args, **kwargs):
+        return  ''
+    def post(self, request,  post_id,*args, **kwargs):
+        comentario = request.POST.get('comentario')
+        if comentario == '' or comentario == None:
+            pass
+        else:
+            comentario_register  = Comentario(
+                post= Post.objects.get(id=post_id),
+                usuario=request.user,
+                criacao= timezone.now(),
+                conteudo=comentario     
+            )
+            comentario_register.save()
+        post = Post.objects.get(id=post_id)
+       
+        return  redirect('comunidade', id_comunidade=post.comunidade.id )
+
 
 class EnviarComunidadeView(LoginRequiredMixin, View):
     def get(self, request, *args,**kwargs):
