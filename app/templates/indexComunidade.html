@@ -6,10 +6,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Comunidades</title>
+  
+      <link rel="stylesheet" href="{% static 'css/milligram.criarC.css' %}">
+
   <link rel="stylesheet" href="{% static 'css/milligram.cGeral.css' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://unpkg.com/phosphor-icons"></script>
+  <style>
+    .alert {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .375rem;
+}
+.alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}
+.alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
 
+
+  </style>
 </head>
 <body>
    <header>
@@ -29,6 +52,11 @@
     </header>
 
   <div class="container">
+    {% if messages %}
+      {%for  m in messages%}
+        <div class="alert {{m.tags}}" role="alert">{{m}}</div>
+      {%endfor%}
+    {% endif %}
       <section class="recommended">
       <h2>Comunidades Recomendadas:</h2>
       <div class="card-group" >
@@ -109,7 +137,36 @@
       </div>
     </section>
   </div>
-   
+    <div id="modalCriar" class="modal-overlay">
+  <div class="modal-content">
+        <a class="back" href="{% url 'indexComunidade' %}"><i class="fas fa-arrow-left"></i></a>
+
+    <h2>Criar Nova Comunidade</h2>
+
+    <form action="{% url 'criar_comunidade' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="nome">Nome da comunidade</label>
+      <input type="text" name="nome" required>
+
+      <label for="etiqueta">Etiquetas</label>
+      <select name="etiquetas" multiple required>
+        {% for e in etiquetas %}
+          <option value="{{ e.id }}">{{ e.nome }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="descricao" >Descrição</label>
+      <textarea name="descricao" rows="4" required></textarea>
+
+      <label for="foto">Foto/Capa da Comunidade</label>
+      <input type="file" required name="foto" accept="image/*">
+
+      <button class="criar-btn" type="submit">Criar</button>
+    </form>
+
+  </div>
+</div>
   <footer>
           <a href="{% url 'suas_comunidades' %}"><i class="fas fa-user"></i></a>
 
@@ -122,13 +179,22 @@
           })
         </script>
       {%else %}
-        <a href="{% url 'criar_comunidade'%}">   <i class="fas fa-plus add-comu-user-premium"  style="cursor:pointer ;"></i>
-</a>
+          <i class="fas fa-plus add-comu-user-premium"  style="cursor:pointer ;"> </i>
+ 
+<script>
+          let aux2 = document.querySelector('.add-comu-user-premium')
+          aux2.addEventListener('click', ()=> {
+            let modal_overlay = document.querySelector('.modal-overlay')
+            modal_overlay.style.display = 'Flex'
+        
+          })
+        </script>
       {%endif%}
    
       <a class="suporte" href="{% url 'suporte' %}"><i class="ph ph-headset"></i></a>
     </footer>
 
+     
     <script src="{% static 'js/index.js'%}"></script>
     <script>
    

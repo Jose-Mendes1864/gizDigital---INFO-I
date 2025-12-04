@@ -3,8 +3,9 @@ from django.views import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from autenticacao.models import PerguntaUsuario,Usuario,PerguntaDoQuestionario,PergutasCheckBox
-from .models import Comunidade, Arquivo,Post,Reuniao,Comentario
+from .models import Comunidade, Arquivo,Post,Reuniao,Comentario,Etiqueta
 from autenticacao.models import Opcao,PerguntaDoQuestionario,Input
+
 from .functions import tiraSnakeCase, pega_dados_comunidade, get_dados_input, adiciona_objetos_com_checkbox,verifica_se
 import os
 from django.utils import timezone
@@ -49,8 +50,8 @@ class IndexComunidadeView(LoginRequiredMixin,View):
 
   
         comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros')[:7]
-        
-        return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque })
+        etiquetas = Etiqueta.objects.all()
+        return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque,'etiquetas': etiquetas })
 
 class ComunidadeView(LoginRequiredMixin,View):
     def get(self, request,id_comunidade, *args, **kwargs):
@@ -270,9 +271,37 @@ class SuasComunidadesView(LoginRequiredMixin, View):
         pass
 class CriarComunidadeView(LoginRequiredMixin, View):
     def get(self, request,*args, **kwargs):
-        return render(request, 'criarComu.html')
-    def post(self, request,*args, **kwargs):
         pass
+    def post(self, request,*args, **kwargs):
+        nome = request.POST.get('nome')
+        etiquetas_id = request.POST.getlist('etiquetas')
+        
+        descricao = request.POST.get('descricao')
+        try:
+                if etiquetas_id == None or etiquetas_id == '' or   len(nome.replace(' ', '')) == 0 or descricao.replace(' ', '') == 0:
+                    messages.add_message(request, constants.ERROR, 'Falha ao criar comunidade, por favor verifique os campo ou tente novamente mais tarde! ')
+
+                else:
+                    etiquetas = Etiqueta.objects.filter(id__in=etiquetas_id)
+                    foto = request.FILES.get('foto')
+                    if Comunidade.objects.filter(nome=nome):
+                        messages.add_message(request, constants.ERROR, 'Por favor, insira um comunidade com nome diferente das já criadas!')
+                    else:
+                        nova_comunidade = Comunidade(
+                            nome=nome,
+                            capa_comunidade=foto,
+                            descricao=descricao
+                        )
+                        nova_comunidade.save()
+                        nova_comunidade.etiquetas.set(etiquetas)
+                        messages.add_message(request, constants.SUCCESS, 'Comunidade Criada com successo! ')
+        except Exception as e:
+            messages.add_message(request, constants.ERROR, f'Falha ao criar comunidade, por favor verifique os campo ou tente novamente mais tarde! erro: {e}')
+
+            
+
+            
+        return redirect('indexComunidade')
 class VerPerfilView(LoginRequiredMixin, View):
     def get(self, request, id,*args, **kwargs):
         return HttpResponse(f'Ver pefil {id}')
