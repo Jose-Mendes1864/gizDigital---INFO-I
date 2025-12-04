@@ -30,13 +30,13 @@
       {% csrf_token %}
       <label for="motivo">Motivo:</label>
       <select name="motivo" id="motivo">
-         <option value="" disabled>-----------------------------</option>
+         <option value=""  selected disabled>-----------------------------</option>
         {% for m in motivos %} 
         <option value="{{m}}">{{m}}</option>
         {%endfor%}
       </select>
 
-
+<br>
       <label for="mensagem">Mensagem:</label>
       <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
 

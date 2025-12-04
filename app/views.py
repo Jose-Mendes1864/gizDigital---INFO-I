@@ -48,11 +48,7 @@ class IndexComunidadeView(LoginRequiredMixin,View):
         
 
   
-        comunidades_selecionadas_querry_set  = Comunidade.objects.filter(id__in=[c.id for c in comunidades_selecionadas])
-        comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros').exclude(   
-                 id__in=comunidades_selecionadas_querry_set.values_list('id', flat=True
-                ))[:5]
-        print(f'Comunidades_  destauqe {comunidades_selecionadas_querry_set}')
+        comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros')[:7]
         
         return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque })
 
@@ -265,11 +261,24 @@ class PerfilEditView(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
         return HttpResponse('Em processo')
 
+class SuasComunidadesView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        comunidades = Comunidade.objects.filter(membros = request.user)
+        return render(request, 'minhaComunidade.html', {'comunidades': comunidades})
+    def post(self, request, *args, **kwargs):
+
+        pass
+class CriarComunidadeView(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        return render(request, 'criarComu.html')
+    def post(self, request,*args, **kwargs):
+        pass
 class VerPerfilView(LoginRequiredMixin, View):
     def get(self, request, id,*args, **kwargs):
         return HttpResponse(f'Ver pefil {id}')
     def post(self, request, id,*args, **kwargs):
         pass
+
 class ModificarPerfilView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
        pass

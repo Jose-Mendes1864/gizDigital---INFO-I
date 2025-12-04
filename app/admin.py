@@ -34,7 +34,8 @@ class ComentarioInline(admin.StackedInline):
 
 @admin.register(Comunidade)
 class ComunidadeAdmin(admin.ModelAdmin):
-   inlines = [ PostInline]
+   inlines = [PostInline]
+ 
    autocomplete_fields = ['membros']
    search_fields = ['nome', 'etiquetas__nome']
    search_help_text = "Busque pelo nome ou etiquetas"

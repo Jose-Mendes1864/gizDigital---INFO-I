@@ -27,9 +27,35 @@
       <h2 class="sair"><a class="Logout" href="{% url 'sair' %}"><i class="ph ph-sign-out"></i></a></h2>
     </header>
     <h1>Minhas comunidades</h1>
+     {% for comunidade in comunidades %}
+    <div class="card {{ comunidade.etiqueta }}"  >
+                                      
+      <div class="card-content">
+              <img src="{{ comunidade.capa_comunidade.url }}" alt="{{ comunidade.nome }}" />
+              <div>
+                <h3 class="nome_comunidade">{{ comunidade.nome }}</h3>
+                <p>{{ comunidade.membros.count }} membros</p>
+                <p class="desc">{{ comunidade.descricao|truncatewords:20  }}</p> 
+                <!-- safe par aintroduzir o html e :50 é aq uantidade de caracteres -->
+            <div style="display: flex;">
+                {% for e in comunidade.etiquetas.all %}
+        
+        <div class="etiqueta etiqueta--{{e.corRGB}}">
+             {{e.nome}}
+        </div>
+                {% endfor%}
+          </div>
+            <button class="entrar"><a href="{% url 'comunidade' comunidade.id%} ">entrar</a></button>
+          
+              </div> 
+             
+            </div>
+      </div>
     
-    <footer>
-      <i class="fas fa-user"></i>
+     {% endfor%}
+     <footer>
+          <a class="back" href="{% url 'indexComunidade' %}"><i class="fas fa-arrow-left"></i></a>
+
       {%if request.user.pontuacao < 4 %}
         <i class="fas fa-plus add-comu-user-normal" style="opacity: 0.4;" ></i>
         <script>
