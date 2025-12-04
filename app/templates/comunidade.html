@@ -15,13 +15,36 @@
   <link rel="stylesheet" href="{% static 'css/milligram.submeter.css' %}" />
   <link rel="stylesheet" href="{% static 'css/milligram.material.css' %}" />
   <link rel="stylesheet" href="{% static 'css/milligram.post.css' %}">
+  <style>
+    .top-bar{
+      width: 100%;
+      height: 40px;
+      background: #d4f4ff;
+      display: flex;
+      align-items: center;
+      padding-left: 5px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
+    .top-bar .back {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: #333;
+        cursor: pointer;
+        width: 60px;
+    }
+  </style>
 
 
 
 </head>
-
 <body class="comunidade {{ comunidade.slug }}">
+  <div class="top-bar">
+    <a class="back" href="{% url 'indexComunidade' %}"><i class="fas fa-arrow-left"></i></a>
+  </div>
   <header class="comunidade-header">
     <img src="{{ comunidade.capa_comunidade.url }}" alt="Imagem da comunidade" class="comunidade-img" />
     <div class="comunidade-info" href="">
@@ -51,7 +74,6 @@
       /* sstyle provisório */
     </style>
   </header>
-  <button><a href="{% url 'indexComunidade' %}">Saia aqui</a></button>
   <nav class="comunidade-tabs tabs">
     <button> <a href="{% url 'carregar' comunidade.id 'posts' %}"
         class=" {% if carregar == 'posts' %}active{% endif %}">postagens</a>
@@ -217,7 +239,7 @@
         <div class="popup material">
         <h2>Mandar Material</h2>
         <input name="titulo" type="text" placeholder="Título do material" />
-          <input name="ext" type="text" placeholder="Que tipo de arquivo você esta mandando preciso colcoar um selec aquinão fiz nada aqui ainda" />
+          <input name="ext" type="text" placeholder="Que tipo de arquivo você esta mandando preciso colcoar um selec aqui não fiz nada aqui ainda" />
 
         <textarea name="descricao" placeholder="Descrição do material"></textarea>
         <input name="material" type="file" placeholder="escolha um arquivo" />

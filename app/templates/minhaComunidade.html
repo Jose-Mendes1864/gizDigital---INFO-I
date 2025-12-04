@@ -1,0 +1,74 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comunidades</title>
+  <link rel="stylesheet" href="{% static 'css/milligram.cGeral.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://unpkg.com/phosphor-icons"></script>
+</head>
+<body>
+   <header>
+       <div class="header-left">
+        <a href="{% url 'perfil' %}"><img src="{%static 'img/macotePI-removebg-preview.png' %}" alt="Avatar" class="avatar" /></a>
+        <i class="fas fa-bell notification"></i>
+      </div>
+      <div class="search-wrapper">
+        <form id="form_pesquisar" action="{% url  'pesquisar' %}" method="POST">
+          {% csrf_token %}
+        <input type="text" class="search-bar"  name="conteudo" placeholder="Pesquise comunidades"  required/>
+    <i class="fas fa-search search-icon" onclick="pesquisar()"></i>
+
+        </form>
+      </div>
+      <h2 class="sair"><a class="Logout" href="{% url 'sair' %}"><i class="ph ph-sign-out"></i></a></h2>
+    </header>
+    <h1>Minhas comunidades</h1>
+    
+    <footer>
+      <i class="fas fa-user"></i>
+      {%if request.user.pontuacao < 4 %}
+        <i class="fas fa-plus add-comu-user-normal" style="opacity: 0.4;" ></i>
+        <script>
+          let aux = document.querySelector('.add-comu-user-normal')
+          aux.addEventListener('click', ()=> {
+            alert('Você só poderá criar comunidade se tiver mais de 4 estrelas')
+          })
+        </script>
+      {%else %}
+       <i class="fas fa-plus add-comu-user-premium" ></i>
+        <script>
+          let aux2 = document.querySelector('.add-comu-user-premium')
+          aux2.addEventListener('click', ()=> {
+            alert('Você pode criar comunidade, deve aparecer o menu aqui')
+          })
+        </script>
+      {%endif%}
+   
+      <a class="suporte" href="{% url 'suporte' %}"><i class="ph ph-headset"></i></a>
+    </footer>
+    <script src="{% static 'js/index.js'%}"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () =>{
+          function pesquisar(){
+            alert('oi')
+        }
+            let etiquetas_div = document.querySelectorAll('div[class*="etiqueta"]')
+            for(let i = 0; i < etiquetas_div.length;i++){
+             
+                    let classes = etiquetas_div[i].classList; // pega todas as classes como DOMTokenList
+                   
+                    let cor = Array.from(classes).find(c => c.startsWith('etiqueta--'));
+                    
+                    etiquetas_div[i].style.backgroundColor  = cor.split('--')[1];
+                   
+              
+                }
+        });
+       
+    </script>
+</body>
+</html>
