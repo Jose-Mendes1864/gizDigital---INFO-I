@@ -134,22 +134,30 @@
       <div>
          {% if post.foto %}
         
-      <img src="{{ post.foto.url }}" alt="Imagem do post" class="post-img" />
+      <img src="{{ post.foto.url }}" alt="Imagem do post" class="post-img" style="max-width: 300px; max-height: 300px;" />
       {% endif %}
       </div>
-       <span class="data">Data:{{ post.data_criacao|date:"d \d\e F \d\e Y"}} <br>Horario:{{ post.data_criacao|time:"H:i"}}</span>
+       <span class="data">Data:{{ post.data_criacao|date:"d \d\e F \d\e Y"}} <br>Horario:{{ post.data_criacao|time:"H:i"}} 
+                </span>
     
       <div class="post-acoes">  
 
-        <button class="btn-coment btn-coment-{{post.id}}">💬</button></div>
+        <button class="btn-coment btn-coment-{{post.id}}">💬</button>
+      </div>
+      {% if post.id|filtrar_comentarios %} {{post.id|filtrar_comentarios|length}} 
+                {%else%}0{%endif%} {%if post.id|filtrar_comentarios|length == 1 %} comentário{%else%} comentários {%endif%}
         <div class="feed-{{post.id}}" style="display: none;">
                   
 <div class="feed">
     <div class="post">
+     
+      {%if  post.id|filtrar_comentarios %}
       {% for coment in post.id|filtrar_comentarios %}
+    
         <div class="iconpo"><img style="width: 25px; height: 25px; border-radius: 50%;object-fit: cover;" src="{{coment.usuario.foto.url}}" alt="fotoDequemFezOpost"> {{coment.usuario}}</div>
         <div class="content-box">{{coment.conteudo}}</div>
     {%endfor%}
+    {% endif %}
 
       </div>
 
@@ -258,15 +266,15 @@
            <img src="{{material.usuario.foto.url}}" alt="fotoDequemFezOpost">
            <h3><a href="{% url 'view_profile' material.usuario.id %}">{{material.usuario}}</a></h3>
          </div>
-          <div class="titulo">{{material.titulo}}precisar mudar aqui</div>
+          <div class="titulo"> <h2>{{material.titulo}}</h2></div>
 
           <div class="descricao">{{material.descricao}}</div>
          
-          <a href="{{material.arquivo.url}}"    class="link-material btn-{{material.ext}}">
-          📄 Vizualizar {{materia.ext}}
+          <a href="{{material.arquivo.url}}"  target="_blank"   class="link-material btn-{{material.ext}}">
+          📄 Vizualizar
         </a> 
-        <a href="{{material.arquivo.url}}"  download="" class="link-material btn-{{material.ext}}">
-          seta Baixar {{materia.ext}}
+        <a href="{{material.arquivo.url}}"  download="" style="font-size: 23px;" class="link-material btn-{{material.ext}}">
+          📥 
         </a> 
       
         </div>

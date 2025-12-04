@@ -50,17 +50,21 @@ def adiciona_objetos_com_checkbox(request,perguntas_com_checkbox, dados_usuario)
 def estrela(request):
     # auqi é chamado quando o usuário adiciona um post
     user = request.user
-    dias_desde_criacao = (timezone.now() - user.date_joined).days 
-            # só é atualizadoquando ele adiciona um post
-    media_ponderada = (3 * (dias_desde_criacao/60) + Post.objects.filter(usuario = user).count())/4
-    if media_ponderada < 2:
-        media_ponderada = 2
+    if user.request.username != 'user_5_estrelas': #só para na hora de apresentar pi ter algum usuário 5 estrelas
+        dias_desde_criacao = (timezone.now() - user.date_joined).days 
+                # só é atualizadoquando ele adiciona um post
+        media_ponderada = (3 * (dias_desde_criacao/60) + Post.objects.filter(usuario = user).count())/4
+        if media_ponderada < 2:
+            media_ponderada = 2
+        
+        media_ponderada = round(media_ponderada)
+        if media_ponderada >5:
+            media_ponderada = 5
+        user.pontuacao = media_ponderada
+        user.save()
+    else:
+        pass
     
-    media_ponderada = round(media_ponderada)
-    if media_ponderada >5:
-        media_ponderada = 5
-    user.pontuacao = media_ponderada
-    user.save()
 
  # media_ponderada  = 3* (dias_criou_conta/60) + 2*quant_posts / 3+2
 
