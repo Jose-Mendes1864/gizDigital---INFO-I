@@ -35,7 +35,7 @@ class IndexComunidadeView(LoginRequiredMixin,View):
         comunidades_selecionadas = []
         # tento ver elass juntas
         comunidades_selecionadas = list(verifica_se('area_saber + leciona', areas_user=areas_user, leciona_para=leciona_para))
-        
+       
         if len(comunidades_selecionadas) < quantidade_de_comunidade_maxima_exibidas: # ai pega só por area do saber
             aux = list(verifica_se('area_do_saber', areas_user=areas_user, leciona_para=leciona_para))
             comunidades_selecionadas.extend(aux[:quantidade_de_comunidade_maxima_exibidas - len(comunidades_selecionadas)])
@@ -52,7 +52,7 @@ class IndexComunidadeView(LoginRequiredMixin,View):
         comunidades_destaque = Comunidade.objects.annotate(num_membros = Count('membros')).order_by('-num_membros').exclude(   
                  id__in=comunidades_selecionadas_querry_set.values_list('id', flat=True
                 ))[:5]
-        
+        print(f'Comunidades_  destauqe {comunidades_selecionadas_querry_set}')
         
         return render(request, 'indexComunidade.html', {'comunidades':comunidades_selecionadas,'comunidades_destaque':comunidades_destaque })
 
