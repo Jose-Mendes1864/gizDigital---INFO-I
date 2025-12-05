@@ -323,11 +323,8 @@
 
     {% elif carregar == 'eventos' %}
     <div class="container">
-    
-      {% for e in dados %}
-      
-      <div class="popup evento">
-      <form action="{% url 'enviar_comunidade' comunidade.id carregar %}" method="POST" enctype="multipart/form-data">
+     <div class="popup evento">
+      <form action="{% url 'enviar_comunidade' comunidade.id 'eventos' %}" method="POST" enctype="multipart/form-data">
        
         {% csrf_token %}
 
@@ -350,6 +347,9 @@
    
   </form>
      </div>  
+      {% for e in dados %}
+      
+     
       <section class="eventos">
          
         <div class="evento-card">
