@@ -29,7 +29,8 @@
     <h1>Minhas comunidades</h1>
      {% for comunidade in comunidades %}
     <div class="card {{ comunidade.etiqueta }}"  >
-                                      
+      
+    <div class="Vcenter">
       <div class="card-content">
               <img src="{{ comunidade.capa_comunidade.url }}" alt="{{ comunidade.nome }}" />
               <div>
@@ -51,7 +52,8 @@
              
             </div>
       </div>
-    
+    </div>
+
      {% endfor%}
      <footer>
           <a class="back" href="{% url 'indexComunidade' %}"><i class="fas fa-arrow-left"></i></a>

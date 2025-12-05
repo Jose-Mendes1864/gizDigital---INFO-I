@@ -50,6 +50,14 @@ header {
   gap: 10px;
 }
 
+.Vcenter {
+  display: flex;
+  justify-content: center;
+  width: 300px;
+  margin: 0 auto;
+
+}
+
 .avatar {
   width: 40px;
   height: 40px;
@@ -207,7 +215,7 @@ footer {
   margin-left: calc((100vw - 100%) / -2);
   background-color: #81d4fa;
   /* border-radius: 20px 20px 0 0; */
-  padding: 15px 0;
+  padding: 8px 0;
   display: flex;
   justify-content: space-around;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
